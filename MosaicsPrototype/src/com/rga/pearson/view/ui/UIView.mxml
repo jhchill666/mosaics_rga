@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:VGroup xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  width="100%" height="100%"
+		  paddingLeft="{GridConstants.UI_PADDING}"
+		  paddingRight="{GridConstants.UI_PADDING}"
+		  paddingTop="{GridConstants.UI_PADDING}"
+		  paddingBottom="{GridConstants.UI_PADDING}"
+		  >
+	
+	
+	
+	<fx:Script>
+		<![CDATA[
+			import com.rga.pearson.model.constants.GridConstants;
+			
+			import mx.collections.ArrayCollection;
+			import mx.events.FlexEvent;
+			
+			/**
+			 * Sets the main categories
+			 */
+			public function setCategories( val:ArrayCollection ):void
+			{
+				categories.dataProvider = val;
+			}
+
+			/**
+			 * Sets the sub categories
+			 */
+			public function setSubCategories( val:ArrayCollection ):void
+			{
+				subCategories.dataProvider = val;
+			}
+			
+		]]>
+	</fx:Script>
+	
+	
+	
+	<s:Label text="Controls" styleName="ui_title"/>
+	
+	<s:HGroup>
+		<s:Label text="Discipline" styleName="iu_label" width="100"/>
+		<s:DropDownList id="categories" width="300"/>
+	</s:HGroup>
+	
+	<s:HGroup>
+		<s:Label text="Sub Category" styleName="iu_label" width="100"/>
+		<s:DropDownList id="subCategories" width="300"/>
+	</s:HGroup>
+	
+	<s:Button id="renderButton" label="Render" />
+	
+
+</s:VGroup>

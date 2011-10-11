@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark">
+	
+	
+	<fx:Script>
+		<![CDATA[
+			import com.rga.pearson.model.constants.GridConstants;
+			
+			private var _isTopLeft : Boolean;
+			private var _isCellDirty : Boolean;
+			private var _colour : int;
+			private var _corner : Point = new Point();
+			
+			/**
+			 * Sets whether the cell is a top left aligned 
+			 * triangle ( true ) or bottom right ( false )
+			 */
+			public function set isTopLeft ( val:Boolean ) : void
+			{
+				_isTopLeft = val;
+				
+				if( !_isTopLeft )
+					_corner.offset( GridConstants.CELL_SIZE, GridConstants.CELL_SIZE );
+			}
+			
+			/**
+			 * @private
+			 */
+			public function get isTopLeft() : Boolean 
+			{
+				return _isTopLeft;
+			}
+			
+			/**
+			 * Sets the colour of this segment
+			 */
+			public function setColour ( colour:uint ) : void
+			{
+				_colour = colour;
+				_isCellDirty = true;
+				
+				invalidateDisplayList();
+			}
+			
+			/**
+			 * @inheritDoc
+			 */
+			override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void
+			{
+				super.updateDisplayList(unscaledWidth, unscaledHeight);
+				
+				if( !_isCellDirty )
+					return;
+				else
+					_isCellDirty = false;
+				
+				graphics.clear();
+				graphics.beginFill( _colour );
+				graphics.moveTo( _corner.x, _corner.y );
+				graphics.lineTo( GridConstants.CELL_SIZE, 0 );
+				graphics.lineTo( 0, GridConstants.CELL_SIZE );
+				graphics.lineTo( _corner.x, _corner.y );
+				graphics.endFill();
+			}
+			
+			
+		]]>
+	</fx:Script>
+	
+	
+</s:Group>

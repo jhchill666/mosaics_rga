@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:components="com.rga.pearson.view.components.*" xmlns:grid="com.rga.pearson.view.grid.*" xmlns:ui="com.rga.pearson.view.ui.*">
+	<fx:Script>
+		<![CDATA[
+			import com.rga.pearson.model.constants.GridConstants;
+		]]>
+	</fx:Script>
+	
+	
+	
+	<s:HGroup width="100%" height="100%">
+		
+		<s:Group width="{GridConstants.CELL_SIZE * GridConstants.NUM_COLS}">
+			<grid:GridView />	
+		</s:Group>
+		
+		<s:Spacer width="100%"/>
+		
+		<s:Group>
+			<ui:UIView />
+		</s:Group>
+		
+		
+	</s:HGroup>
+	
+	
+	
+</s:Group>
