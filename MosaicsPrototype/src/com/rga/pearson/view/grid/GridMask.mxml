@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 width="100%"
+		 height="100%">
+
+
+	<s:states>
+		<s:State name="square"/>
+		<s:State name="squew"/>
+		<s:State name="squewedSquare"/>
+		<s:State name="triangle"/>
+		<s:State name="circle"/>
+	</s:states>
+
+
+
+	<fx:Script>
+		<![CDATA[
+			import com.rga.pearson.model.constants.GridConstants;
+
+			import org.osmf.net.dynamicstreaming.INetStreamMetrics;
+
+
+			public function setShape( index:int ):void
+			{
+				var state:String;
+
+				switch( index )
+				{
+					case 0:
+						state = "square";
+						break;
+					case 1:
+						state = "triangle";
+						break;
+					case 2:
+						state = "squewedSquare";
+						break;
+					case 3:
+						state = "squew";
+						break;
+					default:
+						state = "circle";
+						break;
+				}
+				setCurrentState( state );
+			}
+
+
+			/**
+			 * @inheritDoc
+			 */
+			override protected function stateChanged(oldState:String, newState:String, recursive:Boolean):void
+			{
+				super.stateChanged( oldState, newState, recursive );
+
+				graphics.clear();
+				switch( newState )
+				{
+					case "circle":
+						drawCircle();
+						break;
+					case "triangle":
+						drawTriangle();
+						break;
+					case "square":
+						drawSquare();
+						break
+					case "squewedSquare":
+						drawSquewedSquare();
+						break;
+					case "squew":
+						drawSquew();
+						break;
+				}
+			}
+
+
+			private function drawCircle():void
+			{
+				graphics.beginFill( 0x00FF00 );
+				graphics.drawCircle( ( GridConstants.NUM_COLS / 2 ) * GridConstants.CELL_SIZE, ( GridConstants.NUM_ROWS / 2 ) * GridConstants.CELL_SIZE, ( GridConstants.NUM_ROWS / 2 ) * GridConstants.CELL_SIZE );
+				graphics.endFill();
+			}
+
+
+			private function drawTriangle():void
+			{
+				graphics.beginFill( 0x00FF00 );
+				graphics.moveTo( GridConstants.CELL_SIZE * 2, 0 );
+				graphics.lineTo( GridConstants.CELL_SIZE * GridConstants.NUM_COLS, GridConstants.CELL_SIZE * ( GridConstants.NUM_ROWS - 2 ) );
+				graphics.lineTo( 0, GridConstants.CELL_SIZE * GridConstants.NUM_ROWS );
+				graphics.lineTo( GridConstants.CELL_SIZE * 2, 0 );
+				graphics.endFill();
+			}
+
+
+			private function drawSquewedSquare():void
+			{
+				graphics.beginFill( 0x00FF00 );
+				graphics.moveTo( GridConstants.CELL_SIZE * ( GridConstants.NUM_COLS - 2 ), 0 );
+				graphics.lineTo( GridConstants.CELL_SIZE * GridConstants.NUM_COLS, GridConstants.CELL_SIZE * ( GridConstants.NUM_ROWS - 2 ) );
+				graphics.lineTo( GridConstants.CELL_SIZE * 2, GridConstants.CELL_SIZE * GridConstants.NUM_ROWS );
+				graphics.lineTo( 0, GridConstants.CELL_SIZE * 2 );
+				graphics.endFill();
+			}
+
+
+			private function drawSquare():void
+			{
+				graphics.beginFill( 0x00FF00 );
+				graphics.lineTo( GridConstants.CELL_SIZE * GridConstants.NUM_COLS, 0 );
+				graphics.lineTo( GridConstants.CELL_SIZE * GridConstants.NUM_COLS, GridConstants.CELL_SIZE * GridConstants.NUM_ROWS );
+				graphics.lineTo( 0, GridConstants.CELL_SIZE * GridConstants.NUM_ROWS );
+				graphics.lineTo( 0, 0 );
+				graphics.endFill();
+			}
+
+
+			private function drawSquew():void
+			{
+				graphics.beginFill( 0x00FF00 );
+				graphics.lineTo( GridConstants.CELL_SIZE * ( GridConstants.NUM_COLS - 2 ), 0 );
+				graphics.lineTo( GridConstants.CELL_SIZE * GridConstants.NUM_COLS, GridConstants.CELL_SIZE * GridConstants.NUM_ROWS );
+				graphics.lineTo( GridConstants.CELL_SIZE * 2 , GridConstants.CELL_SIZE * GridConstants.NUM_ROWS );
+				graphics.endFill();
+			}
+		]]>
+	</fx:Script>
+
+
+
+
+
+
+
+
+
+</s:Group>

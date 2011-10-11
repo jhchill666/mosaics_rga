@@ -1,94 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
 		 xmlns:s="library://ns.adobe.com/flex/spark"
-		 xmlns:mx="library://ns.adobe.com/flex/mx">
-	
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:grid="com.rga.pearson.view.grid.*">
 
-	
+
+
 	<fx:Script>
 		<![CDATA[
 			import com.rga.pearson.model.constants.GridConstants;
-			
+
 			import mx.collections.ArrayCollection;
-			
+
 			private var segments:Vector.<GridCellSeqment> = new Vector.<GridCellSeqment>();
-			
+
 			private var _gridInitialised : Boolean = false;
+
 			private var _isGridDirty : Boolean = false;
+
 			private var _newGrid : ArrayCollection;
-			
+
+
 			/**
 			 * Re-renders the grid
 			 */
-			public function renderSegments ( grid:ArrayCollection ) : void
+			public function renderSegments( grid:ArrayCollection ):void
 			{
 				_isGridDirty = true;
 				_newGrid = grid;
-				
+
 				invalidateDisplayList();
 			}
-			
+
+
 			/**
 			 * @inheritDoc
 			 */
 			override protected function createChildren():void
 			{
 				super.createChildren();
-				
+
 				if( _gridInitialised )
 					return;
-				
+
 				var i:int, j:int, numCells:int, segment:GridCellSeqment;
-				
+
 				numCells = ( GridConstants.NUM_ROWS * GridConstants.NUM_COLS );
-				
-				for( i = 0; i < numCells; i++ )
+
+				for( i = 0 ; i < numCells*2 ; i++ )
 				{
-					for( j = 0; j < 2; j ++ )
+					for( j = 0 ; j < 2 ; j ++ )
 					{
 						segment = new GridCellSeqment();
 						segment.isTopLeft = ( j == 0 );
-						
+
 						segment.x = ( i % GridConstants.NUM_COLS ) * GridConstants.CELL_SIZE;
 						segment.y = Math.floor( i / GridConstants.NUM_COLS ) * GridConstants.CELL_SIZE;
-						
+
 						grid.addChild( segment );
 						segments.push( segment );
 					}
 				}
+
 				_gridInitialised = true;
 			}
-			
-			
+
+
 			/**
 			 * @inheritDoc
 			 */
 			override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void
 			{
 				super.updateDisplayList(unscaledWidth, unscaledHeight);
-				
+
 				if( !_isGridDirty )
 					return;
-				
+
 				var i:int, numCells:int, numSeqments:int, segment:GridCellSeqment;
-				
+
 				numCells = ( GridConstants.NUM_ROWS * GridConstants.NUM_COLS );
 				numSeqments = ( numCells * 2 );
-				
-				for( i = 0; i < numSeqments; i++ )
+
+				for( i = 0 ; i < numSeqments ; i++ )
 				{
 					segment = segments[i] as GridCellSeqment;
 					segment.setColour( _newGrid[i] );
 				}
 				_isGridDirty = false;
 			}
-			
-			
 		]]>
 	</fx:Script>
-	
-	
-	<mx:UIComponent id="grid" />
-	
-	
+
+
+	<mx:UIComponent id="grid"
+					mask="{gridMask}"/>
+
+	<grid:GridMask id="gridMask"/>
+
+
 </s:Group>

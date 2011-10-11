@@ -2,6 +2,7 @@ package com.rga.pearson
 {
 	import com.rga.pearson.control.StartupCommand;
 	import com.rga.pearson.model.constants.CategoryModel;
+	import com.rga.pearson.model.constants.ColourModel;
 	import com.rga.pearson.model.constants.GridModel;
 	import com.rga.pearson.view.MainView;
 	import com.rga.pearson.view.MainViewMediator;
@@ -12,7 +13,7 @@ package com.rga.pearson
 	
 	import org.robotlegs.base.ContextEvent;
 	import org.robotlegs.mvcs.Context;
-	
+
 	public class PearsonContext extends Context
 	{
 		/**
@@ -23,17 +24,18 @@ package com.rga.pearson
 			// model
 			injector.mapSingleton( CategoryModel );
 			injector.mapSingleton( GridModel );
-			
+			injector.mapSingleton( ColourModel );
+
 			// view
 			mediatorMap.mapView( UIView, UIViewMediator );
 			mediatorMap.mapView( GridView, GridViewMediator );
-			
+
 			// commands
 			commandMap.mapEvent( ContextEvent.STARTUP, StartupCommand );
-			
+
 			// startup
 			dispatchEvent( new ContextEvent( ContextEvent.STARTUP ));
-			
+
 			mediatorMap.mapView( MainView, MainViewMediator );
 			mediatorMap.createMediator( contextView );
 		}
