@@ -1,6 +1,6 @@
 package com.rga.pearson.view
 {
-	import com.rga.pearson.model.constants.CategoryModel;
+	import com.rga.pearson.model.CategoryModel;
 	
 	import org.robotlegs.mvcs.Mediator;
 	

@@ -1,8 +1,10 @@
 package com.rga.pearson.view.ui
 {
+	import com.rga.pearson.event.AssetSliderEvent;
 	import com.rga.pearson.event.DisciplineEvent;
 	import com.rga.pearson.event.RenderEvent;
-	import com.rga.pearson.model.constants.CategoryModel;
+	import com.rga.pearson.model.CategoryModel;
+	import com.rga.pearson.model.GridModel;
 
 	import flash.events.MouseEvent;
 
@@ -21,6 +23,9 @@ package com.rga.pearson.view.ui
 		[Inject]
 		public var categoryModel:CategoryModel;
 
+		[Inject]
+		public var gridModel:GridModel;
+
 
 		/**
 		 * @inheritDoc
@@ -32,7 +37,9 @@ package com.rga.pearson.view.ui
 			eventMap.mapListener( view.categories, DropDownEvent.CLOSE, categoryChosenhandler );
 			eventMap.mapListener( view.subCategories, DropDownEvent.CLOSE, subCategoryChosenhandler );
 			eventMap.mapListener( view.renderButton, MouseEvent.CLICK, renderHanler );
+			eventMap.mapListener( view, AssetSliderEvent.UPDATE_ASSETS, updateAssetsHandler );
 
+			view.setTotals( gridModel.getAssets() );
 			view.setCategories( categoryModel.getCategories() );
 		}
 
@@ -63,11 +70,22 @@ package com.rga.pearson.view.ui
 
 
 		/**
+		 * An asset slider has been updated so update the model
+		 */
+		private function updateAssetsHandler( event:AssetSliderEvent ):void
+		{
+			gridModel.setAssets( view.assetsVo );
+
+			dispatch( new RenderEvent( RenderEvent.SEGMENT_RENDER ));
+		}
+
+
+		/**
 		 * Context render handler - re-renders the grid cell segments
 		 */
 		private function renderHanler( event:MouseEvent ):void
 		{
-			dispatch( new RenderEvent( RenderEvent.RENDER ));
+			dispatch( new RenderEvent( RenderEvent.FULL_RENDER ));
 		}
 	}
 }

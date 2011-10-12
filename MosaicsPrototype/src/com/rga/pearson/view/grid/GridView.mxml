@@ -8,6 +8,7 @@
 
 	<fx:Script>
 		<![CDATA[
+			import com.rga.pearson.model.constants.ColourConstants;
 			import com.rga.pearson.model.constants.GridConstants;
 
 			import mx.collections.ArrayCollection;
@@ -47,11 +48,12 @@
 
 				numCells = ( GridConstants.NUM_ROWS * GridConstants.NUM_COLS );
 
-				for( i = 0 ; i < numCells*2 ; i++ )
+				for( i = 0 ; i < numCells ; i++ )
 				{
 					for( j = 0 ; j < 2 ; j ++ )
 					{
 						segment = new GridCellSeqment();
+						segment.setColour( Math.random() * 0xFFFFFF );
 						segment.isTopLeft = ( j == 0 );
 
 						segment.x = ( i % GridConstants.NUM_COLS ) * GridConstants.CELL_SIZE;
@@ -76,26 +78,35 @@
 				if( !_isGridDirty )
 					return;
 
-				var i:int, numCells:int, numSeqments:int, segment:GridCellSeqment;
+				var i:int, numCells:int, numSeqments:int, segment:GridCellSeqment, count:int;
 
 				numCells = ( GridConstants.NUM_ROWS * GridConstants.NUM_COLS );
 				numSeqments = ( numCells * 2 );
+
+				trace( "\n\nChecking ActiveSegements...\n" );
 
 				for( i = 0 ; i < numSeqments ; i++ )
 				{
 					segment = segments[i] as GridCellSeqment;
 					segment.setColour( _newGrid[i] );
+
+					if( _newGrid[i] != ColourConstants.INACTIVE_CELL )
+						count ++;
 				}
+
+				trace( count + " ActiveSegements\n\n" );
+
 				_isGridDirty = false;
 			}
 		]]>
 	</fx:Script>
 
-
 	<mx:UIComponent id="grid"
 					mask="{gridMask}"/>
 
-	<grid:GridMask id="gridMask"/>
+
+	<grid:GridMask id="gridMask"
+				   visible="false"/>
 
 
 </s:Group>

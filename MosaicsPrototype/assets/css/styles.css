@@ -9,3 +9,10 @@
 	color: #999999;
 	fontSize: 12px;
 }
+
+.slider_label
+{
+	color: #000000;
+	fontSize: 12px;
+	textAlign: center;
+}

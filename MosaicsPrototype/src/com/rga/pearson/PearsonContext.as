@@ -1,9 +1,9 @@
 package com.rga.pearson
 {
 	import com.rga.pearson.control.StartupCommand;
-	import com.rga.pearson.model.constants.CategoryModel;
-	import com.rga.pearson.model.constants.ColourModel;
-	import com.rga.pearson.model.constants.GridModel;
+	import com.rga.pearson.model.CategoryModel;
+	import com.rga.pearson.model.ColourModel;
+	import com.rga.pearson.model.GridModel;
 	import com.rga.pearson.view.MainView;
 	import com.rga.pearson.view.MainViewMediator;
 	import com.rga.pearson.view.grid.GridView;

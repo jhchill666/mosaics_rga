@@ -9,19 +9,63 @@
 		  paddingBottom="{GridConstants.UI_PADDING}"
 		  xmlns:components="com.rga.pearson.view.components.*"
 		  gap="0"
-		  creationComplete="vgroup1_creationCompleteHandler(event)">
+		  xmlns:mx="library://ns.adobe.com/flex/mx">
 
+
+	<fx:Metadata>
+		[Event(name="update_assets", type="com.rga.pearson.event.AssetSliderEvent")]
+	</fx:Metadata>
 
 
 	<fx:Script>
 		<![CDATA[
+			import com.rga.pearson.event.AssetSliderEvent;
+			import com.rga.pearson.model.constants.AssetConstants;
 			import com.rga.pearson.model.constants.GridConstants;
+			import com.rga.pearson.model.vo.AssetSliderVO;
 
 			import mx.collections.ArrayCollection;
+			import mx.events.DragEvent;
 			import mx.events.FlexEvent;
+			import mx.events.SliderEvent;
 
-			[Bindable]
-			private var maximumSegments : int;
+			private var _assetsVo : AssetSliderVO = new AssetSliderVO();;
+
+
+			public function setTotals( assets:AssetSliderVO ):void
+			{
+				books.maximumAssets = assets.maximum;
+				books.currentAssets = assets.total;
+
+				docs.maximumAssets = assets.maximum;
+				docs.currentAssets = assets.total;
+
+				images.maximumAssets = assets.maximum;
+				images.currentAssets = assets.total;
+
+				interactive.maximumAssets = assets.maximum;
+				interactive.currentAssets = assets.total;
+
+				videos.maximumAssets = assets.maximum;
+				videos.currentAssets = assets.total;
+			}
+
+
+			/**
+			 * Returns the AssetSliderVo updated with all slider's data
+			 */
+			public function get assetsVo():AssetSliderVO
+			{
+				_assetsVo.updateAsset( AssetConstants.BOOKS, books.slider.value );
+				_assetsVo.updateAsset( AssetConstants.DOCUMENTS, docs.slider.value );
+				_assetsVo.updateAsset( AssetConstants.IMAGES, images.slider.value );
+				_assetsVo.updateAsset( AssetConstants.INTERACTIVE, interactive.slider.value );
+				_assetsVo.updateAsset( AssetConstants.VIDEOS, videos.slider.value );
+
+				trace( "Assets.total == "+_assetsVo.total );
+
+				return _assetsVo;
+			}
 
 
 			/**
@@ -44,9 +88,11 @@
 			}
 
 
-			protected function vgroup1_creationCompleteHandler(event:FlexEvent):void
+			protected function assetslider1_updateHandler(event:AssetSliderEvent):void
 			{
-				maximumSegments = ( GridConstants.NUM_COLS * 2 ) * ( GridConstants.NUM_ROWS * 2 );
+				event.stopImmediatePropagation();
+
+				dispatchEvent( new AssetSliderEvent( AssetSliderEvent.UPDATE_ASSETS ));
 			}
 		]]>
 	</fx:Script>
@@ -75,22 +121,21 @@
 
 	<components:UIPanel title="Asset specification">
 
-		<s:HSlider id="Videos"
-				   width="300"
-				   minimum="0"
-				   maximum="{maximumSegments}"/>
-		<s:HSlider id="Books"
-				   width="300"
-				   maximum="{maximumSegments}"/>
-		<s:HSlider id="Images"
-				   width="300"
-				   maximum="{maximumSegments}"/>
-		<s:HSlider id="Software"
-				   width="300"
-				   maximum="{maximumSegments}"/>
-		<s:HSlider id="audio"
-				   width="300"
-				   maximum="{maximumSegments}"/>
+		<components:AssetSlider id="books"
+								text="{AssetConstants.BOOKS}"
+								update_asset="assetslider1_updateHandler(event)"/>
+		<components:AssetSlider id="docs"
+								text="{AssetConstants.DOCUMENTS}"
+								update_asset="assetslider1_updateHandler(event)"/>
+		<components:AssetSlider id="images"
+								text="{AssetConstants.IMAGES}"
+								update_asset="assetslider1_updateHandler(event)"/>
+		<components:AssetSlider id="interactive"
+								text="{AssetConstants.INTERACTIVE}"
+								update_asset="assetslider1_updateHandler(event)"/>
+		<components:AssetSlider id="videos"
+								text="{AssetConstants.VIDEOS}"
+								update_asset="assetslider1_updateHandler(event)"/>
 
 	</components:UIPanel>
 

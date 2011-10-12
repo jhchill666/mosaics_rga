@@ -2,9 +2,9 @@ package com.rga.pearson.view.grid
 {
 	import com.rga.pearson.event.DisciplineEvent;
 	import com.rga.pearson.event.RenderEvent;
-	import com.rga.pearson.model.constants.CategoryModel;
-	import com.rga.pearson.model.constants.ColourModel;
-	import com.rga.pearson.model.constants.GridModel;
+	import com.rga.pearson.model.CategoryModel;
+	import com.rga.pearson.model.ColourModel;
+	import com.rga.pearson.model.GridModel;
 
 	import de.polygonal.ds.Array2;
 
@@ -35,7 +35,8 @@ package com.rga.pearson.view.grid
 		{
 			super.onRegister();
 
-			eventMap.mapListener( eventDispatcher, RenderEvent.RENDER, renderHandler );
+			eventMap.mapListener( eventDispatcher, RenderEvent.FULL_RENDER, renderFullHandler );
+			eventMap.mapListener( eventDispatcher, RenderEvent.SEGMENT_RENDER, renderSegmentHandler );
 			eventMap.mapListener( eventDispatcher, DisciplineEvent.NEW_DISCIPLINE, newDisciplineHandler );
 		}
 
@@ -43,7 +44,7 @@ package com.rga.pearson.view.grid
 		/**
 		 * Re-renders the grid with the new distribution
 		 */
-		private function renderHandler( event:RenderEvent ):void
+		private function renderFullHandler( event:RenderEvent ):void
 		{
 			var currentSubCategory:int, numSubCategories:int, distribution:Array2, colourDistribution:ArrayCollection;
 
@@ -51,7 +52,21 @@ package com.rga.pearson.view.grid
 			numSubCategories = categoryModel.getSubCategories( currentSubCategory ).length;
 
 			distribution = gridModel.getDistribution( currentSubCategory, numSubCategories );
-			colourDistribution = colourModel.colourDistribution( distribution );
+			colourDistribution = colourModel.colourDistribution( distribution, gridModel.getAssets() );
+
+			view.renderSegments( colourDistribution );
+		}
+
+
+		/**
+		 * Renders a new segment to the grid
+		 */
+		private function renderSegmentHandler( event:RenderEvent ):void
+		{
+			var currentSubCategory:int, numSubCategories:int, distribution:Array2, colourDistribution:ArrayCollection;
+
+			distribution = gridModel.updateDistribution( currentSubCategory, numSubCategories );
+			colourDistribution = colourModel.colourDistribution( distribution, gridModel.getAssets() );
 
 			view.renderSegments( colourDistribution );
 		}

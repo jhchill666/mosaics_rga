@@ -43,6 +43,8 @@
 			 */
 			public function setColour( colour:uint ):void
 			{
+//				trace( "Colour :: 0x"+colour.toString(16));
+
 				_colour = colour;
 				_isCellDirty = true;
 

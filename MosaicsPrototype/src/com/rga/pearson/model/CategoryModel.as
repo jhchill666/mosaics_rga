@@ -1,4 +1,4 @@
-package com.rga.pearson.model.constants
+package com.rga.pearson.model
 {
 	import mx.collections.ArrayCollection;
 	

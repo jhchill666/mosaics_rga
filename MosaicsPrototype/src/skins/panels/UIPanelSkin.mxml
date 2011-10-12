@@ -47,9 +47,13 @@
 			 minWidth="0"
 			 minHeight="0">
 		<s:layout>
-			<s:VerticalLayout horizontalAlign="center"
-							  verticalAlign="middle"
-							  gap="30"/>
+			<s:VerticalLayout horizontalAlign="left"
+							  verticalAlign="top"
+							  gap="10"
+							  paddingTop="60"
+							  paddingRight="30"
+							  paddingBottom="40"
+							  paddingLeft="30"/>
 		</s:layout>
 	</s:Group>
 
