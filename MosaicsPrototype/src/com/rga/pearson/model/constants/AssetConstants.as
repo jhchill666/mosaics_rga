@@ -13,5 +13,28 @@ package com.rga.pearson.model.constants
 		public static const DOCUMENTS : String = "Documents";
 
 		public static const INTERACTIVE : String = "Interactive";
+
+
+		/**
+		 * Returns vector of asset type colours
+		 */
+		public static function getTypes():Vector.<String>
+		{
+			var vec:Vector.<String> = new Vector.<String>();
+			vec.push( BOOKS );
+			vec.push( IMAGES );
+			vec.push( VIDEOS );
+			vec.push( DOCUMENTS );
+			vec.push( INTERACTIVE );
+			return vec;
+		}
+
+
+		/**the number of asset typesvector of asset type colours
+		 */
+		public static function size():int
+		{
+			return getTypes().length;
+		}
 	}
 }

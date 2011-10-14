@@ -18,6 +18,7 @@
 			}
 
 
+			[Bindable]
 			public function get title():String
 			{
 				return _title;

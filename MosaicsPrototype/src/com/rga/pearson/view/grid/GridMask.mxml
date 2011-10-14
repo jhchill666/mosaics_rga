@@ -22,6 +22,8 @@
 
 			import org.osmf.net.dynamicstreaming.INetStreamMetrics;
 
+			private var LINE_ALPHA : Number = 1;
+
 
 			public function setShape( index:int ):void
 			{
@@ -80,6 +82,7 @@
 
 			private function drawCircle():void
 			{
+				graphics.lineStyle( 1, 0xFFFFFF );
 				graphics.beginFill( 0x00FF00 );
 				graphics.drawCircle( ( GridConstants.NUM_COLS / 2 ) * GridConstants.CELL_SIZE, ( GridConstants.NUM_ROWS / 2 ) * GridConstants.CELL_SIZE, ( GridConstants.NUM_ROWS / 2 ) * GridConstants.CELL_SIZE );
 				graphics.endFill();
@@ -88,6 +91,7 @@
 
 			private function drawTriangle():void
 			{
+				graphics.lineStyle( 1, 0xFFFFFF );
 				graphics.beginFill( 0x00FF00 );
 				graphics.moveTo( GridConstants.CELL_SIZE * 2, 0 );
 				graphics.lineTo( GridConstants.CELL_SIZE * GridConstants.NUM_COLS, GridConstants.CELL_SIZE * ( GridConstants.NUM_ROWS - 2 ) );
@@ -99,6 +103,7 @@
 
 			private function drawSquewedSquare():void
 			{
+				graphics.lineStyle( 1, 0xFFFFFF );
 				graphics.beginFill( 0x00FF00 );
 				graphics.moveTo( GridConstants.CELL_SIZE * ( GridConstants.NUM_COLS - 2 ), 0 );
 				graphics.lineTo( GridConstants.CELL_SIZE * GridConstants.NUM_COLS, GridConstants.CELL_SIZE * ( GridConstants.NUM_ROWS - 2 ) );
@@ -110,6 +115,7 @@
 
 			private function drawSquare():void
 			{
+				graphics.lineStyle( 1, 0xFFFFFF );
 				graphics.beginFill( 0x00FF00 );
 				graphics.lineTo( GridConstants.CELL_SIZE * GridConstants.NUM_COLS, 0 );
 				graphics.lineTo( GridConstants.CELL_SIZE * GridConstants.NUM_COLS, GridConstants.CELL_SIZE * GridConstants.NUM_ROWS );
@@ -121,6 +127,7 @@
 
 			private function drawSquew():void
 			{
+				graphics.lineStyle( 1, 0xFFFFFF );
 				graphics.beginFill( 0x00FF00 );
 				graphics.lineTo( GridConstants.CELL_SIZE * ( GridConstants.NUM_COLS - 2 ), 0 );
 				graphics.lineTo( GridConstants.CELL_SIZE * GridConstants.NUM_COLS, GridConstants.CELL_SIZE * GridConstants.NUM_ROWS );
@@ -129,13 +136,6 @@
 			}
 		]]>
 	</fx:Script>
-
-
-
-
-
-
-
 
 
 </s:Group>

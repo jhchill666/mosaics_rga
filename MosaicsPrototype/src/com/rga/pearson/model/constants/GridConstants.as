@@ -4,7 +4,7 @@ package com.rga.pearson.model.constants
 	public class GridConstants
 	{
 		// grid
-		public static const CELL_SIZE : int = 14;
+		public static const CELL_SIZE : int = 10;
 
 		public static const NUM_ROWS : int = 9;
 

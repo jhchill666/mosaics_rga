@@ -83,8 +83,6 @@
 				numCells = ( GridConstants.NUM_ROWS * GridConstants.NUM_COLS );
 				numSeqments = ( numCells * 2 );
 
-				trace( "\n\nChecking ActiveSegements...\n" );
-
 				for( i = 0 ; i < numSeqments ; i++ )
 				{
 					segment = segments[i] as GridCellSeqment;
@@ -93,9 +91,6 @@
 					if( _newGrid[i] != ColourConstants.INACTIVE_CELL )
 						count ++;
 				}
-
-				trace( count + " ActiveSegements\n\n" );
-
 				_isGridDirty = false;
 			}
 		]]>

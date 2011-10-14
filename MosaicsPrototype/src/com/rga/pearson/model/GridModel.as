@@ -2,26 +2,22 @@ package com.rga.pearson.model
 {
 	import com.rga.pearson.model.constants.ColourConstants;
 	import com.rga.pearson.model.constants.GridConstants;
-	import com.rga.pearson.model.vo.AssetSliderVO;
+	import com.rga.pearson.model.vo.AssetConfigVO;
 	import com.rga.pearson.utils.ArrayUtils;
 	import com.rga.pearson.utils.NumberUtils;
+	import com.tiltdigital.data.HashMap;
 
 	import de.polygonal.ds.Array2;
-	import de.polygonal.ds.HashMap;
 
 	import org.robotlegs.mvcs.Actor;
 
 	public class GridModel extends Actor
 	{
-		public var numSegments : int;
-
-		public var activeSegments : int;
-
 		public var usableSegments : int = 45;
 
 		private var segments : Array2;
 
-		private var assetsVo:AssetSliderVO;
+		private var assetsVo:AssetConfigVO;
 
 		private var cache:HashMap;
 
@@ -31,12 +27,7 @@ package com.rga.pearson.model
 		 */
 		public function GridModel()
 		{
-			numSegments = ( GridConstants.NUM_COLS * 2 ) * GridConstants.NUM_ROWS;
-			activeSegments = (( numSegments / 4 ) * 1 );
-
-			assetsVo = new AssetSliderVO();
-			assetsVo.total = activeSegments;
-			assetsVo.maximum = numSegments;
+			super();
 		}
 
 
@@ -49,7 +40,7 @@ package com.rga.pearson.model
 		/**
 		 * Updates the model with the new configuration of assets
 		 */
-		public function setAssets( vo:AssetSliderVO ):void
+		public function setAssets( vo:AssetConfigVO ):void
 		{
 			assetsVo = vo;
 		}
@@ -58,7 +49,7 @@ package com.rga.pearson.model
 		/**
 		 * Returns the currently configuired assets
 		 */
-		public function getAssets():AssetSliderVO
+		public function getAssets():AssetConfigVO
 		{
 			return assetsVo;
 		}
@@ -82,22 +73,51 @@ package com.rga.pearson.model
 		 */
 		public function updateDistribution( current:int, total:int ):Array2
 		{
-			if( assetsVo.total > cache.size )
-			{
-				trace( "Adding "+( assetsVo.total - cache.size )+" to Cache" );
+			var i:int, offset:int, func:Function;
 
-				for( var i:int = 0 ; i < ( assetsVo.total - cache.size ) ; i ++ )
-					addNewSegment();
+			if( assetsVo.active > cache.size())
+			{
+				offset = ( assetsVo.active - cache.size() );
+				func = addNewSegment;
 			}
 			else
 			{
-				trace( "Removing "+( cache.size - assetsVo.total )+" from Cache" );
-
-				for( i = 0 ; i < ( cache.size - assetsVo.total ) ; i ++ )
-					removeRandomSegment();
+				offset = ( cache.size() - assetsVo.active );
+				func = removeRandomSegment;
 			}
 
+			for( i = 0 ; i < offset ; i ++ )
+				func();
+
+			dumpSegments();
 			return segments;
+		}
+
+
+		/**
+		 * Dumps the active segments to the output for debugging
+		 */
+		public function dumpSegments():void
+		{
+			var i:int, segment:uint, segmentArray:Array, segCount:int = 0;
+
+			trace( "\n\nDumpSegments ::::::::::::::::::::::::::::: " );
+			trace( "Total :: "+segments.size );
+			trace( "Cache :: "+cache.size() );
+
+			segmentArray = segments.toArray();
+			segCount = 0;
+
+			for( i = 0 ; i < segmentArray.length ; i ++ )
+			{
+				segment = ( segmentArray[i] as uint );
+
+				if( segment == 0xFFFFFF )
+				{
+					segCount ++;
+				}
+			}
+			trace( "Active :: "+segCount+"\n\n" );
 		}
 
 
@@ -134,8 +154,8 @@ package com.rga.pearson.model
 		{
 			var index:int, segment:Segment;
 
-			index = Math.random() * cache.size;
-			segment = cache.toArray()[index];
+			index = Math.random() * cache.size();
+			segment = cache.getKeys()[ index ];
 
 			segments.set( segment.col, segment.row, ColourConstants.INACTIVE_CELL );
 			cache.remove( segment.id );
@@ -149,10 +169,9 @@ package com.rga.pearson.model
 		 */
 		private function getBottomBiasedDistribution():Array2
 		{
-			var segment:Segment;
 			segments = getArray2();
 
-			for( var i:int = 0 ; i < activeSegments ; i ++ )
+			for( var i:int = 0 ; i < assetsVo.active ; i ++ )
 				addNewSegment()
 
 			return segments;
@@ -164,10 +183,14 @@ package com.rga.pearson.model
 		 */
 		private function getRandomDistribution():Array
 		{
-			var i:int, tmp:Array = new Array( numSegments );
+			var i:int, tmp:Array = new Array();
 
-			for( i ; i < activeSegments ; i ++ )
-				tmp[i] = 0xFFFFFF;
+			for( i ; i < assetsVo.maximum ; i ++ )
+			{
+				tmp[i] = ( i < assetsVo.active )
+					? 0xFFFFFF :
+					ColourConstants.INACTIVE_CELL;
+			}
 
 			return ArrayUtils.shuffle( tmp );
 		}
@@ -182,6 +205,8 @@ package com.rga.pearson.model
 			var segmentRow:Number, segmentCol:Number, segment:Segment, colour:uint;
 
 			segmentCol = NumberUtils.middle( 0, GridConstants.NUM_COLS * 2 );
+
+//			segmentCol = NumberUtils.randomRange( GridConstants.NUM_COLS - 4, GridConstants.NUM_COLS + 4 );
 			segmentRow = NumberUtils.monteCarlo() * GridConstants.NUM_ROWS;
 
 			segment = new Segment( segmentCol, segmentRow );
@@ -202,18 +227,20 @@ package com.rga.pearson.model
 		 */
 		private function findNearestNeighbour( segment:Segment ):Segment
 		{
-			var segment:Segment, band:int, neighbours:Vector.<Segment> = new Vector.<Segment>();
+			var segment:Segment, band:int, neighbour:Segment, neighbours:Vector.<Segment>;
 
-			while( neighbours.length == 0 )
+			while( neighbour == null )
 			{
-//				if( NumberUtils.weight( 1 ))
-				band = NumberUtils.randomRange( 4, 6 );
+				if( NumberUtils.weight( 0.6 ))
+					band = NumberUtils.randomRange( 2, 6 );
 
-				neighbours = getNearestNeighbours( segment, band );
+				neighbour = getAnEmptyNeighbour( segment, band );
+//				neighbours = getNearestNeighbours( segment, band );
 				band ++;
 			}
 
-			return getClosestEmptyNeighbour( segment, neighbours );
+			return neighbour;
+//			return getClosestEmptyNeighbour( segment, neighbours );
 		}
 
 
@@ -236,6 +263,50 @@ package com.rga.pearson.model
 				xIndex = ( i % ( GridConstants.NUM_COLS * 2 ));
 				yIndex = Math.floor( i / ( GridConstants.NUM_ROWS * 2 ));
 
+				segColour = segments.get( xIndex, yIndex ) as uint;
+
+				if( xIndex >= ( segment.col - band ) && yIndex == ( segment.row - band ) && xIndex <= ( segment.col + band ))
+				{
+					if( segColour != ColourConstants.INACTIVE_CELL )
+						neighbours.push( new Segment( xIndex, yIndex ));
+				}
+
+				if( xIndex >= ( segment.col - band ) && yIndex == ( segment.row + band ) && xIndex <= ( segment.col + band ))
+				{
+					if( segColour != ColourConstants.INACTIVE_CELL )
+						neighbours.push( new Segment( xIndex, yIndex ));
+				}
+
+				if( yIndex >= ( segment.row - band ) && xIndex == ( segment.col - band ) &&  yIndex <= ( segment.row + band ))
+				{
+					if( segColour != ColourConstants.INACTIVE_CELL )
+						neighbours.push( new Segment( xIndex, yIndex ));
+				}
+			}
+
+			return neighbours;
+		}
+
+
+		/**
+		 * Returns the nearest EMPTY neighbours to the randomly chosen segment
+		 *
+		 * @param segment 	The randomly chosen segment
+		 * @param band		The tier of segment neighbours.  If not empty segments are found in the
+		 * neighbours immediately surrounding the segment, band is incremented, to assess the neighbours
+		 * on the next tier out from the random segement.
+		 */
+		private function getAnEmptyNeighbour( segment:Segment, band:int = 1 ):Segment
+		{
+			var i:int, xIndex:Number, yIndex:Number, neighbours:Vector.<Segment>, segColour:uint;
+
+			neighbours = new Vector.<Segment>();
+
+			for( i = 0 ; i < segments.size ; i ++ )
+			{
+				xIndex = ( i % ( GridConstants.NUM_COLS * 2 ));
+				yIndex = Math.floor( i / ( GridConstants.NUM_ROWS * 2 ));
+
 				if( xIndex < segment.col - band || xIndex > segment.col + band )
 					continue;
 
@@ -247,10 +318,10 @@ package com.rga.pearson.model
 				if( segColour.toString(16) != ColourConstants.INACTIVE_CELL.toString(16))
 					continue;
 
-				neighbours.push( new Segment( xIndex, yIndex ));
+				return new Segment( xIndex, yIndex );
 			}
 
-			return neighbours;
+			return null;
 		}
 
 
@@ -313,7 +384,7 @@ package com.rga.pearson.model
 			if( cache == null )
 				cache = new HashMap();
 
-			cache.insert( segment.id, segment )
+			cache.put( segment.id, segment );
 			return segment;
 		}
 	}

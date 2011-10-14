@@ -22,49 +22,46 @@
 			import com.rga.pearson.event.AssetSliderEvent;
 			import com.rga.pearson.model.constants.AssetConstants;
 			import com.rga.pearson.model.constants.GridConstants;
-			import com.rga.pearson.model.vo.AssetSliderVO;
+			import com.rga.pearson.model.vo.AssetConfigVO;
 
 			import mx.collections.ArrayCollection;
-			import mx.events.DragEvent;
-			import mx.events.FlexEvent;
-			import mx.events.SliderEvent;
 
-			private var _assetsVo : AssetSliderVO = new AssetSliderVO();;
+			private var _assetsVo : AssetConfigVO;
 
 
-			public function setTotals( assets:AssetSliderVO ):void
+			public function setTotals( assets:AssetConfigVO ):void
 			{
 				books.maximumAssets = assets.maximum;
-				books.currentAssets = assets.total;
+				books.currentAssets = assets.getAsset( AssetConstants.BOOKS );
 
 				docs.maximumAssets = assets.maximum;
-				docs.currentAssets = assets.total;
+				docs.currentAssets = assets.getAsset( AssetConstants.DOCUMENTS );
 
 				images.maximumAssets = assets.maximum;
-				images.currentAssets = assets.total;
+				images.currentAssets = assets.getAsset( AssetConstants.IMAGES );
 
 				interactive.maximumAssets = assets.maximum;
-				interactive.currentAssets = assets.total;
+				interactive.currentAssets = assets.getAsset( AssetConstants.INTERACTIVE );
 
 				videos.maximumAssets = assets.maximum;
-				videos.currentAssets = assets.total;
+				videos.currentAssets = assets.getAsset( AssetConstants.VIDEOS );
+
+				_assetsVo = assets;
 			}
 
 
 			/**
 			 * Returns the AssetSliderVo updated with all slider's data
 			 */
-			public function get assetsVo():AssetSliderVO
+			public function updateAssetsVo( assetsVo:AssetConfigVO ):AssetConfigVO
 			{
-				_assetsVo.updateAsset( AssetConstants.BOOKS, books.slider.value );
-				_assetsVo.updateAsset( AssetConstants.DOCUMENTS, docs.slider.value );
-				_assetsVo.updateAsset( AssetConstants.IMAGES, images.slider.value );
-				_assetsVo.updateAsset( AssetConstants.INTERACTIVE, interactive.slider.value );
-				_assetsVo.updateAsset( AssetConstants.VIDEOS, videos.slider.value );
-
-				trace( "Assets.total == "+_assetsVo.total );
-
-				return _assetsVo;
+				assetsVo.updateAsset( AssetConstants.BOOKS, books.slider.value, false );
+				assetsVo.updateAsset( AssetConstants.DOCUMENTS, docs.slider.value, false );
+				assetsVo.updateAsset( AssetConstants.IMAGES, images.slider.value, false );
+				assetsVo.updateAsset( AssetConstants.INTERACTIVE, interactive.slider.value, false );
+				assetsVo.updateAsset( AssetConstants.VIDEOS, videos.slider.value, false );
+				assetsVo.updateTotals();
+				return assetsVo;
 			}
 
 
@@ -124,26 +121,44 @@
 		<components:AssetSlider id="books"
 								text="{AssetConstants.BOOKS}"
 								update_asset="assetslider1_updateHandler(event)"/>
-		<components:AssetSlider id="docs"
-								text="{AssetConstants.DOCUMENTS}"
+		<components:AssetSlider id="videos"
+								text="{AssetConstants.VIDEOS}"
 								update_asset="assetslider1_updateHandler(event)"/>
 		<components:AssetSlider id="images"
 								text="{AssetConstants.IMAGES}"
 								update_asset="assetslider1_updateHandler(event)"/>
+		<components:AssetSlider id="docs"
+								text="{AssetConstants.DOCUMENTS}"
+								update_asset="assetslider1_updateHandler(event)"/>
 		<components:AssetSlider id="interactive"
 								text="{AssetConstants.INTERACTIVE}"
 								update_asset="assetslider1_updateHandler(event)"/>
-		<components:AssetSlider id="videos"
-								text="{AssetConstants.VIDEOS}"
-								update_asset="assetslider1_updateHandler(event)"/>
+
+	</components:UIPanel>
+
+
+	<components:UIPanel height="100"
+						title="Colour distribution">
+
+		<components:ColourSpectrum id="spectrum"/>
 
 	</components:UIPanel>
 
 
 	<components:UIPanel height="60">
 
+		<components:layout>
+			<s:VerticalLayout horizontalAlign="left"
+							  verticalAlign="top"
+							  gap="10"
+							  paddingTop="20"
+							  paddingRight="30"
+							  paddingBottom="40"
+							  paddingLeft="20"/>
+		</components:layout>
+
 		<s:Button id="renderButton"
-				  label="Render"/>
+				  label="Generate Mosaic"/>
 
 	</components:UIPanel>
 

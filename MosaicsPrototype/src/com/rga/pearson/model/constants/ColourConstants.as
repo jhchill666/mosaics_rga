@@ -20,5 +20,20 @@ package com.rga.pearson.model.constants
 
 		// inactive
 		public static const INACTIVE_CELL : uint = 0x323232;
+
+
+		/**
+		 * Returns vector of asset type colours
+		 */
+		public static function getColours():Vector.<uint>
+		{
+			var vec:Vector.<uint> = new Vector.<uint>();
+			vec.push( GREEN );
+			vec.push( YELLOW );
+			vec.push( PINK );
+			vec.push( BLUE );
+			vec.push( ORANGE );
+			return vec;
+		}
 	}
 }

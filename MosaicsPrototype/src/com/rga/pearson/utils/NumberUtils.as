@@ -60,7 +60,7 @@ package com.rga.pearson.utils
 				if( numTwo < y )
 				{
 					found = true;
-					return numTwo;
+					return numOne;
 				}
 				hack ++;
 			}

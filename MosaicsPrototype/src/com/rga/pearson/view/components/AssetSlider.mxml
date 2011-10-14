@@ -53,7 +53,7 @@
 			 */
 			public function set currentAssets( val:int ):void
 			{
-				_currentAssets = ( val / 5 );
+				_currentAssets = val;
 
 				dispatchEvent( new PropertyChangeEvent( PropertyChangeEvent.PROPERTY_CHANGE ));
 			}
@@ -103,6 +103,12 @@
 			{
 				dispatchEvent( new AssetSliderEvent( AssetSliderEvent.UPDATE_ASSET ));
 			}
+
+
+			protected function slider_changeHandler(event:SliderEvent):void
+			{
+				dispatchEvent( new AssetSliderEvent( AssetSliderEvent.UPDATE_ASSET ));
+			}
 		]]>
 	</fx:Script>
 
@@ -123,7 +129,8 @@
 				value="{currentAssets}"
 				snapInterval="1"
 				tickInterval="5"
-				liveDragging="true"
+				liveDragging="false"
+				change="slider_changeHandler(event)"
 				thumbDrag="slider_thumbDragHandler(event)"
 				thumbRelease="slider_thumbReleaseHandler(event)"/>
 

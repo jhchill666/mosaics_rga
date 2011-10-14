@@ -1,10 +1,13 @@
 package com.rga.pearson.view.ui
 {
 	import com.rga.pearson.event.AssetSliderEvent;
+	import com.rga.pearson.event.ColourModelEvent;
 	import com.rga.pearson.event.DisciplineEvent;
 	import com.rga.pearson.event.RenderEvent;
 	import com.rga.pearson.model.CategoryModel;
+	import com.rga.pearson.model.ColourModel;
 	import com.rga.pearson.model.GridModel;
+	import com.rga.pearson.model.vo.AssetConfigVO;
 
 	import flash.events.MouseEvent;
 
@@ -26,6 +29,9 @@ package com.rga.pearson.view.ui
 		[Inject]
 		public var gridModel:GridModel;
 
+		[Inject]
+		public var colourModel : ColourModel;
+
 
 		/**
 		 * @inheritDoc
@@ -38,9 +44,11 @@ package com.rga.pearson.view.ui
 			eventMap.mapListener( view.subCategories, DropDownEvent.CLOSE, subCategoryChosenhandler );
 			eventMap.mapListener( view.renderButton, MouseEvent.CLICK, renderHanler );
 			eventMap.mapListener( view, AssetSliderEvent.UPDATE_ASSETS, updateAssetsHandler );
+			eventMap.mapListener( eventDispatcher, ColourModelEvent.SWATCHES_UPDATED, updateSpectrumHandler );
 
 			view.setTotals( gridModel.getAssets() );
 			view.setCategories( categoryModel.getCategories() );
+			view.setSubCategories( categoryModel.getSubCategories( 0 ));
 		}
 
 
@@ -74,9 +82,23 @@ package com.rga.pearson.view.ui
 		 */
 		private function updateAssetsHandler( event:AssetSliderEvent ):void
 		{
-			gridModel.setAssets( view.assetsVo );
+			var assetsVo:AssetConfigVO, updatedAssets:AssetConfigVO;
+
+			assetsVo = gridModel.getAssets();
+			updatedAssets = view.updateAssetsVo( assetsVo );
+
+			gridModel.setAssets( updatedAssets );
 
 			dispatch( new RenderEvent( RenderEvent.SEGMENT_RENDER ));
+		}
+
+
+		/**
+		 * An asset slider has been updated so update the model
+		 */
+		private function updateSpectrumHandler( event:ColourModelEvent ):void
+		{
+			view.spectrum.updateSwatches( colourModel.swatches );
 		}
 
 
