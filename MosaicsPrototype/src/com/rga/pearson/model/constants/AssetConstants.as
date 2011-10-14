@@ -6,13 +6,27 @@ package com.rga.pearson.model.constants
 	{
 		public static const BOOKS : String = "Books";
 
+		public static const DOCUMENTS : String = "Documents";
+		
 		public static const IMAGES : String = "Images";
 
+		public static const INTERACTIVE : String = "Interactive";
+		
 		public static const VIDEOS : String = "Videos";
 
-		public static const DOCUMENTS : String = "Documents";
-
-		public static const INTERACTIVE : String = "Interactive";
+		/**
+		 * Returns vector of asset type colours
+		 */
+		public static function getTypes() : Vector.<String>
+		{
+			return new Vector.<uint>([
+				BOOKS,
+				DOCUMENTS,
+				IMAGES,
+				INTERACTIVE,
+				VIDEOS
+			]);
+		}
 
 
 		/**

@@ -70,4 +70,3 @@ package de.polygonal.ds
 		function toArray():Array
 	}
 }
-

@@ -59,4 +59,3 @@ package de.polygonal.ds
 		function set data(obj:*):void
 	}
 }
-

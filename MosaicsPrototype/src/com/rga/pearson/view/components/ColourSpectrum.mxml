@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:HGroup xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx">
+
+
+
+	<fx:Script>
+		<![CDATA[
+			import com.greensock.TweenLite;
+
+			private var spectrumWidth:int = 500;
+
+			private var swatchWidth:Number;
+
+			private var swatchHeight:int = 14;
+
+
+			/**
+			 * Draws each of the swatches to the holder component
+			 */
+			public function updateSwatches( swatches:Vector.<uint> ):void
+			{
+				swatchWidth = ( spectrumWidth / swatches.length );
+
+				holder.alpha = 0;
+				holder.graphics.clear();
+				for( var i:int = 0 ; i < swatches.length ; i ++ )
+				{
+					holder.graphics.beginFill( swatches[i] );
+					holder.graphics.drawRect( i * swatchWidth, 0, swatchWidth, swatchHeight );
+					holder.graphics.endFill();
+				}
+
+				holder.width = spectrumWidth;
+				TweenLite.to( holder, 0.6, { alpha:1 });
+			}
+		]]>
+	</fx:Script>
+
+
+	<mx:UIComponent id="holder"/>
+
+
+</s:HGroup>
