@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:SkinnableContainer xmlns:fx="http://ns.adobe.com/mxml/2009"
+					  xmlns:s="library://ns.adobe.com/flex/spark"
+					  xmlns:mx="library://ns.adobe.com/flex/mx"
+					  width="800"
+					  skinClass="skins.panels.UIPanelSkin">
+
+
+
+	<fx:Script>
+		<![CDATA[
+			private var _title:String;
+
+
+			public function set title( val:String ):void
+			{
+				_title = val;
+			}
+
+
+			[Bindable]
+			public function get title():String
+			{
+				return _title;
+			}
+		]]>
+	</fx:Script>
+
+
+</s:SkinnableContainer>
