@@ -39,7 +39,7 @@ package com.rga.pearson.model
 			spectrum[0].extrapolate();
 
 			swatches = spectrum[0].getSwatches();
-//			swatches = transposeColours2( swatches );
+			//			swatches = transposeColours2( swatches );
 
 			dispatch( new ColourModelEvent( ColourModelEvent.SWATCHES_UPDATED ));
 
