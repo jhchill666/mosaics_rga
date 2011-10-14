@@ -39,11 +39,11 @@ package com.rga.pearson.model
 			spectrum[0].extrapolate();
 
 			swatches = spectrum[0].getSwatches();
-			//			swatches = transposeColours2( swatches );
+//			swatches = transposeColours( swatches );
 
 			dispatch( new ColourModelEvent( ColourModelEvent.SWATCHES_UPDATED ));
 
-			return getColouredDistribution2( array, swatches );
+			return getColouredDistribution( array, swatches );
 		}
 
 
