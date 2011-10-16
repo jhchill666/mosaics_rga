@@ -17,7 +17,7 @@
 
 	<s:Label text="{hostComponent.title}"
 			 styleName="ui_title"
-			 left="16"
+			 left="24"
 			 top="16"/>
 
 
@@ -25,7 +25,7 @@
 			width="1"
 			height="100%">
 		<s:fill>
-			<s:SolidColor color="#444444"/>
+			<s:SolidColor color="#444444" alpha="0.5"/>
 		</s:fill>
 	</s:Rect>
 
@@ -34,7 +34,7 @@
 			height="1"
 			bottom="0">
 		<s:fill>
-			<s:SolidColor color="#444444"/>
+			<s:SolidColor color="#444444" alpha="0.5"/>
 		</s:fill>
 	</s:Rect>
 
@@ -47,11 +47,11 @@
 			 minWidth="0"
 			 minHeight="0">
 		<s:layout>
-			<s:VerticalLayout horizontalAlign="left"
+			<s:VerticalLayout horizontalAlign="right"
 							  verticalAlign="top"
 							  gap="10"
 							  paddingTop="60"
-							  paddingRight="30"
+							  paddingRight="0"
 							  paddingBottom="40"
 							  paddingLeft="30"/>
 		</s:layout>

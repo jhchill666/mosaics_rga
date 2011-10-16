@@ -9,7 +9,7 @@
 		<![CDATA[
 			import com.greensock.TweenLite;
 
-			private var spectrumWidth:int = 500;
+			private var spectrumWidth:int = 400;
 
 			private var swatchWidth:Number;
 
@@ -21,7 +21,7 @@
 			 */
 			public function updateSwatches( swatches:Vector.<uint> ):void
 			{
-				swatchWidth = ( spectrumWidth / swatches.length );
+				swatchWidth = ( width / swatches.length );
 
 				holder.alpha = 0;
 				holder.graphics.clear();

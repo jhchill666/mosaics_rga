@@ -20,8 +20,6 @@
 		<![CDATA[
 			import com.rga.pearson.model.constants.GridConstants;
 
-			import org.osmf.net.dynamicstreaming.INetStreamMetrics;
-
 			private var LINE_ALPHA : Number = 1;
 
 

@@ -97,11 +97,11 @@
 	</fx:Script>
 
 	<mx:UIComponent id="grid"
-					mask="{gridMask}"/>
+					mask="{gridMask}" top="20"/>
 
 
 	<grid:GridMask id="gridMask"
-				   visible="false"/>
+				   visible="false" top="20"/>
 
 
 </s:Group>

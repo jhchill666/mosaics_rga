@@ -38,13 +38,15 @@ package com.rga.pearson.view.grid
 			eventMap.mapListener( eventDispatcher, RenderEvent.FULL_RENDER, renderFullHandler );
 			eventMap.mapListener( eventDispatcher, RenderEvent.SEGMENT_RENDER, renderSegmentHandler );
 			eventMap.mapListener( eventDispatcher, DisciplineEvent.NEW_DISCIPLINE, newDisciplineHandler );
+			
+			renderFullHandler();
 		}
 
 
 		/**
 		 * Re-renders the grid with the new distribution
 		 */
-		private function renderFullHandler( event:RenderEvent ):void
+		private function renderFullHandler( event:RenderEvent = null ):void
 		{
 			var currentSubCategory:int, numSubCategories:int, distribution:Array2, colourDistribution:ArrayCollection;
 

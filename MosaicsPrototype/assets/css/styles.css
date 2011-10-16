@@ -1,11 +1,72 @@
-.ui_title
+@font-face
 {
-	color: #FFFFFF;
-	fontSize: 24px;
+	src: url("/../assets/fonts/miso-bold-webfont.ttf");
+	fontFamily: miso;
+	fontWeight: bold;
 }
 
-.iu_label
+@font-face
 {
-	color: #999999;
+	src: url("/../assets/fonts/miso-regular-webfont.ttf");
+	fontFamily: miso;
+	fontWeight: normal;
+}
+
+.header_first
+{
+	color: #FFFFFF;
+	fontSize: 36px;
+	fontFamily: miso;
+	fontWeight: bold
+}
+.header_second
+{
+	color: #AAAAAA;
+	fontSize: 36px;
+	fontFamily: miso;
+	fontWeight: bold
+}
+
+.ui_title
+{
+	color: #DDDDDD;
+	fontSize: 24px;
+	fontFamily: miso;
+	fontWeight: bold
+}
+
+.iu_label_books, .ui_label_docs, .ui_label_images, .ui_label_inter, .ui_label_videos
+{
+	fontSize: 14px;
+	fontFamily:miso;
+}
+
+.iu_label_books
+{
+	color: #94C845;
+}
+.ui_label_docs
+{
+	color: #47BFB9;
+}
+.ui_label_images
+{
+	color: #F6DD10;
+}
+.ui_label_inter
+{
+	color: #EA6629;
+}
+.ui_label_videos
+{
+	color: #ED4E9B;
+}
+
+
+.slider_label
+{
+	color: #333333;
 	fontSize: 12px;
+	fontFamily:miso;
+	textAlign:center
 }

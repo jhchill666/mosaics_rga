@@ -2,7 +2,6 @@
 <s:HGroup xmlns:fx="http://ns.adobe.com/mxml/2009"
 		  xmlns:s="library://ns.adobe.com/flex/spark"
 		  xmlns:mx="library://ns.adobe.com/flex/mx"
-		  width="400"
 		  height="40"
 		  verticalAlign="middle">
 
@@ -21,6 +20,8 @@
 			import mx.events.SliderEvent;
 
 			private var _text:String;
+			
+			private var _styleName:String;
 
 			private var _maximumSegments:int;
 
@@ -64,6 +65,16 @@
 			{
 				return _currentAssets;
 			}
+			
+			
+			/**
+			 * Sets the style colour for this label
+			 */
+			public function set style( val:String ):void
+			{
+				_styleName = val;
+				invalidateProperties();
+			}
 
 
 			/**
@@ -90,6 +101,7 @@
 				super.commitProperties();
 
 				label.text = _text;
+				label.styleName = _styleName;
 			}
 
 
@@ -104,11 +116,6 @@
 				dispatchEvent( new AssetSliderEvent( AssetSliderEvent.UPDATE_ASSET ));
 			}
 
-
-			protected function slider_changeHandler(event:SliderEvent):void
-			{
-				dispatchEvent( new AssetSliderEvent( AssetSliderEvent.UPDATE_ASSET ));
-			}
 		]]>
 	</fx:Script>
 
@@ -129,8 +136,7 @@
 				value="{currentAssets}"
 				snapInterval="1"
 				tickInterval="5"
-				liveDragging="false"
-				change="slider_changeHandler(event)"
+				liveDragging="true"
 				thumbDrag="slider_thumbDragHandler(event)"
 				thumbRelease="slider_thumbReleaseHandler(event)"/>
 
