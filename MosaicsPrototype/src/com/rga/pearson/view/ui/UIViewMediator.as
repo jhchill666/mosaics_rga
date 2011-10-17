@@ -107,7 +107,16 @@ package com.rga.pearson.view.ui
 		 */
 		private function renderHanler( event:MouseEvent ):void
 		{
+			var index:int, subCategories:ArrayCollection;
+			
+			index = Math.random() * ( categoryModel.getCategories().length );
+			subCategories = categoryModel.getSubCategories( index );
+			
+			view.categories.selectedIndex = index;
+			view.setSubCategories( subCategories );
+			
 			dispatch( new RenderEvent( RenderEvent.FULL_RENDER ));
+			dispatch( new DisciplineEvent( DisciplineEvent.NEW_DISCIPLINE, index ));
 		}
 	}
 }

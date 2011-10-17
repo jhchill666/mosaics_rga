@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:UIComponent xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				xmlns:s="library://ns.adobe.com/flex/spark" 
+				xmlns:mx="library://ns.adobe.com/flex/mx">
+	
+	
+	
+	<fx:Script>
+		<![CDATA[
+			
+			
+			private var thumbs:Array = new Array();
+			private var gap : int = 30;
+			
+			public function addThumb ( thumb:Bitmap ) : void
+			{
+				thumbs.splice( 0, 0, thumb );
+				
+				if( thumbs.length == 5 )
+				{
+					var bmp:Bitmap = thumbs.pop();
+					
+					if( contains( bmp ))
+						removeChild( bmp );
+					
+					bmp.bitmapData.dispose();
+					bmp = null;
+				}
+
+				invalidateDisplayList();
+			}
+			
+			
+			override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void
+			{
+				super.updateDisplayList(unscaledWidth, unscaledHeight);
+				
+				var i:int, thumb:Bitmap;
+				
+				if( thumbs == null )
+					return;
+				
+				for( i = 0; i < thumbs.length; i ++ )
+				{
+					thumb = ( thumbs[i] as Bitmap );
+					thumb.y = ( i * ( thumb.height + gap ));
+					
+					addChild( thumb );
+				}
+			}
+			
+			
+		]]>
+	</fx:Script>
+	
+	
+	
+	
+</mx:UIComponent>

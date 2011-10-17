@@ -15,9 +15,10 @@
 		<![CDATA[
 			import com.rga.pearson.event.AssetSliderEvent;
 			import com.rga.pearson.model.constants.AssetConstants;
+			import com.rga.pearson.model.constants.ColourConstants;
 			import com.rga.pearson.model.constants.GridConstants;
 			import com.rga.pearson.model.vo.AssetConfigVO;
-
+			
 			import mx.collections.ArrayCollection;
 
 			private var _assetsVo : AssetConfigVO;
@@ -113,23 +114,23 @@
 	<components:UIPanel title="Asset specification" width="100%">
 
 		<components:AssetSlider id="books"
-								style="iu_label_books"
+								colour="{ColourConstants.GREEN}"
 								text="{AssetConstants.BOOKS}"
 								update_asset="assetslider1_updateHandler(event)"/>
 		<components:AssetSlider id="videos"
-								style="ui_label_videos"
+								colour="{ColourConstants.PINK}"
 								text="{AssetConstants.VIDEOS}"
 								update_asset="assetslider1_updateHandler(event)"/>
 		<components:AssetSlider id="images"
-								style="ui_label_images"
+								colour="{ColourConstants.YELLOW}"
 								text="{AssetConstants.IMAGES}"
 								update_asset="assetslider1_updateHandler(event)"/>
 		<components:AssetSlider id="docs"
-								style="ui_label_docs"
+								colour="{ColourConstants.BLUE}"
 								text="{AssetConstants.DOCUMENTS}"
 								update_asset="assetslider1_updateHandler(event)"/>
 		<components:AssetSlider id="interactive"
-								style="ui_label_inter"
+								colour="{ColourConstants.ORANGE}"
 								text="{AssetConstants.INTERACTIVE}"
 								update_asset="assetslider1_updateHandler(event)"/>
 

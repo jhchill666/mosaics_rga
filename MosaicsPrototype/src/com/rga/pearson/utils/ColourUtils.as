@@ -3,8 +3,10 @@ package com.rga.pearson.utils
 
 	public class ColourUtils
 	{
-		public static function interpolate(fromColor:uint, toColor:uint, progress:Number):uint
+		public static function interpolate(fromColor:uint, toColor:uint, progress:Number, random:Number = 0 ):uint
 		{
+			var rand:Number, weight:Number = 0.3;
+			
 			var q:Number = 1-progress;
 			var fromA:uint = (fromColor >> 24) & 0xFF;
 			var fromR:uint = (fromColor >> 16) & 0xFF;
@@ -14,10 +16,24 @@ package com.rga.pearson.utils
 			var toR:uint = (toColor >> 16) & 0xFF;
 			var toG:uint = (toColor >>  8) & 0xFF;
 			var toB:uint =  toColor        & 0xFF;
-			var resultA:uint = fromA*q + toA*progress;
-			var resultR:uint = fromR*q + toR*progress;
-			var resultG:uint = fromG*q + toG*progress;
-			var resultB:uint = fromB*q + toB*progress;
+			
+			rand = ( NumberUtils.weight( weight ) )
+				? NumberUtils.randomRange( -random, random )
+				: 0;
+				
+			var resultA:uint = (fromA*q + toA*progress) + rand;
+			rand = ( NumberUtils.weight( weight ) )
+				? NumberUtils.randomRange( -random, random )
+				: 0;
+			var resultR:uint = (fromR*q + toR*progress) + rand;
+			rand = ( NumberUtils.weight( weight ) )
+				? NumberUtils.randomRange( -random, random )
+				: 0;
+			var resultG:uint = (fromG*q + toG*progress) + rand;
+			rand = ( NumberUtils.weight( weight ) )
+				? NumberUtils.randomRange( -random, random )
+				: 0;
+			var resultB:uint = (fromB*q + toB*progress) + rand;
 			var resultColor:uint = resultA << 24 | resultR << 16 | resultG << 8 | resultB;
 			return resultColor;
 		}

@@ -10,7 +10,7 @@
 		<![CDATA[
 			import com.rga.pearson.model.constants.ColourConstants;
 			import com.rga.pearson.model.constants.GridConstants;
-
+			
 			import mx.collections.ArrayCollection;
 
 			private var segments:Vector.<GridCellSeqment> = new Vector.<GridCellSeqment>();
@@ -53,7 +53,6 @@
 					for( j = 0 ; j < 2 ; j ++ )
 					{
 						segment = new GridCellSeqment();
-						segment.setColour( Math.random() * 0xFFFFFF );
 						segment.isTopLeft = ( j == 0 );
 
 						segment.x = ( i % GridConstants.NUM_COLS ) * GridConstants.CELL_SIZE;
@@ -86,7 +85,7 @@
 				for( i = 0 ; i < numSeqments ; i++ )
 				{
 					segment = segments[i] as GridCellSeqment;
-					segment.setColour( _newGrid[i] );
+					segment.segment = _newGrid[i];
 
 					if( _newGrid[i] != ColourConstants.INACTIVE_CELL )
 						count ++;

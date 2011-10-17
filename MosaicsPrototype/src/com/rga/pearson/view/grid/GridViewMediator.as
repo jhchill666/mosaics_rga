@@ -5,11 +5,11 @@ package com.rga.pearson.view.grid
 	import com.rga.pearson.model.CategoryModel;
 	import com.rga.pearson.model.ColourModel;
 	import com.rga.pearson.model.GridModel;
-
+	
 	import de.polygonal.ds.Array2;
-
+	
 	import mx.collections.ArrayCollection;
-
+	
 	import org.robotlegs.mvcs.Mediator;
 
 	public class GridViewMediator extends Mediator
@@ -56,6 +56,7 @@ package com.rga.pearson.view.grid
 			distribution = gridModel.getDistribution( currentSubCategory, numSubCategories );
 			colourDistribution = colourModel.colourDistribution( distribution, gridModel.getAssets() );
 
+			dispatch( new RenderEvent( RenderEvent.SAVE_GRID ));
 			view.renderSegments( colourDistribution );
 		}
 

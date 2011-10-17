@@ -92,7 +92,9 @@ package com.rga.pearson.model.colour
 				{
 					progress = ( i - mergePoint ) * ( mergeRange / 255 );
 //					progress += NumberUtils.randomRange( -2, 2 );
-					colour = ColourUtils.interpolate( colour, next.colour, progress );
+					colour = ColourUtils.interpolate( colour, next.colour, progress, 30 );
+					
+					trace("Next ::" +colour );
 
 					step ++;
 				}

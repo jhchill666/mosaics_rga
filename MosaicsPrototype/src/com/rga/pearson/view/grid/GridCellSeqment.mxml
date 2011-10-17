@@ -6,12 +6,13 @@
 	<fx:Script>
 		<![CDATA[
 			import com.rga.pearson.model.constants.GridConstants;
+			import com.rga.pearson.model.vo.Segment;
 
 			private var _isTopLeft : Boolean;
 
 			private var _isCellDirty : Boolean;
 
-			private var _colour : int;
+			private var _segment : Segment;
 
 			private var _corner : Point = new Point();
 
@@ -41,11 +42,9 @@
 			/**
 			 * Sets the colour of this segment
 			 */
-			public function setColour( colour:uint ):void
+			public function set segment( val:Segment ):void
 			{
-//				trace( "Colour :: 0x"+colour.toString(16));
-
-				_colour = colour;
+				_segment = val;
 				_isCellDirty = true;
 
 				invalidateDisplayList();
@@ -65,7 +64,7 @@
 					_isCellDirty = false;
 
 				graphics.clear();
-				graphics.beginFill( _colour );
+				graphics.beginFill( _segment.rawColour );
 				graphics.moveTo( _corner.x, _corner.y );
 				graphics.lineTo( GridConstants.CELL_SIZE, 0 );
 				graphics.lineTo( 0, GridConstants.CELL_SIZE );

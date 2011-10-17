@@ -6,11 +6,12 @@ package com.rga.pearson.model
 	import com.rga.pearson.model.constants.ColourConstants;
 	import com.rga.pearson.model.constants.GridConstants;
 	import com.rga.pearson.model.vo.AssetConfigVO;
-
+	import com.rga.pearson.model.vo.Segment;
+	
 	import de.polygonal.ds.Array2;
-
+	
 	import mx.collections.ArrayCollection;
-
+	
 	import org.robotlegs.mvcs.Actor;
 
 	public class ColourModel extends Actor
@@ -120,53 +121,19 @@ package com.rga.pearson.model
 		 */
 		private function getColouredDistribution( array:Array2, colours:Vector.<uint> ):ArrayCollection
 		{
-			var i:int, segCount:int, arr:Array = array.toArray();
+			var i:int, segCount:int, segment:Segment, arr:Array = array.toArray();
 
 			segCount = 0;
 
 			for( i = 0 ; i < arr.length ; i ++ )
 			{
-				if( arr[ i ] == ColourConstants.INACTIVE_CELL )
+				segment = arr[i] as Segment;
+				
+				if( segment.rawColour == ColourConstants.INACTIVE_CELL )
 					continue;
 
-				if( arr[ i ] == 0xFFFFFF )
-				{
-					arr[ i ] = colours[segCount];
-					segCount ++;
-				}
-			}
-			return new ArrayCollection( arr );
-		}
-
-
-		private function getColouredDistribution2( array:Array2, colours:Vector.<uint> ):ArrayCollection
-		{
-			var i:int, row:int, col:int, tmp:Array, arr:Array = array.toArray();
-
-			tmp = new Array();
-			row = GridConstants.NUM_ROWS;
-			col = 0;
-
-			try
-			{
-				for( i = 0 ; i < arr.length ; i ++ )
-				{
-					if( row == 0 )
-					{
-						row = GridConstants.NUM_ROWS;
-						col ++;
-					}
-					else
-						row --;
-
-					if( arr[ i ] == 0xFFFFFF )
-						arr[ row * GridConstants.NUM_COLS + col ] = swatches[ i ];
-					else
-						tmp[ i ] = arr[ i ];
-				}
-			}
-			catch( er:* )
-			{
+				segment.rawColour = colours[segCount];
+				segCount ++;
 			}
 			return new ArrayCollection( arr );
 		}

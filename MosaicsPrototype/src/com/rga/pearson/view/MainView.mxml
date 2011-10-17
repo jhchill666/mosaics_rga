@@ -23,7 +23,13 @@
 			<s:HorizontalLayout horizontalAlign="left" verticalAlign="top"/>
 		</s:layout>
 		
-		<grid:GridView width="120" top="30"/>
+		<s:VGroup>
+			
+			<grid:GridView width="120" top="30" height="120" id="grid"/>
+			<components:GridThumbnails id="thumnails" />
+			
+		</s:VGroup>
+			
 		
 		<ui:UIView width="500"/>
 		

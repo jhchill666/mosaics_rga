@@ -7,6 +7,8 @@ package com.rga.pearson.event
 		public static const FULL_RENDER : String = "RenderEvent.FULL_RENDER";
 
 		public static const SEGMENT_RENDER : String = "RenderEvent.SEGMENT_RENDER";
+		
+		public static const SAVE_GRID : String = "RenderEvent.SAVE_GRID";
 
 
 		/**

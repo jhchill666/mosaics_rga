@@ -15,13 +15,15 @@
 		<![CDATA[
 			import com.rga.pearson.event.AssetSliderEvent;
 			import com.rga.pearson.model.constants.GridConstants;
-
+			
 			import mx.events.PropertyChangeEvent;
 			import mx.events.SliderEvent;
+			import mx.graphics.IFill;
+			import mx.graphics.SolidColor;
 
 			private var _text:String;
 			
-			private var _styleName:String;
+			private var _colour:uint;
 
 			private var _maximumSegments:int;
 
@@ -70,9 +72,9 @@
 			/**
 			 * Sets the style colour for this label
 			 */
-			public function set style( val:String ):void
+			public function set colour( val:uint ):void
 			{
-				_styleName = val;
+				_colour = val;
 				invalidateProperties();
 			}
 
@@ -101,7 +103,10 @@
 				super.commitProperties();
 
 				label.text = _text;
-				label.styleName = _styleName;
+				
+				bullet.graphics.beginFill( _colour );
+				bullet.graphics.drawRect( 0, -5, 1, 8 );
+				bullet.graphics.endFill();
 			}
 
 
@@ -119,10 +124,13 @@
 		]]>
 	</fx:Script>
 
+	
+	<s:Group id="bullet" width="4"/>
+	
 
 	<s:Label id="label"
 			 styleName="iu_label"
-			 width="100"/>
+			 width="90"/>
 
 	<s:TextInput id="sliderValue"
 				 text="{currentAssets}"
