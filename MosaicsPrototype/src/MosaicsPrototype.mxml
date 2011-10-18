@@ -6,40 +6,40 @@
 					   minHeight="800"
 					   width="1000"
 					   height="800"
-					   backgroundColor="0x000000"
+					   backgroundColor="0x111111"
 					   xmlns:view="com.rga.pearson.view.*"
 					   verticalCenter="0"
 					   horizontalCenter="0"
-					   addedToStage="windowedapplication1_addedToStageHandler(event)">
-	
-	
+					   addedToStage="windowedapplication1_addedToStageHandler(event)"
+					   xmlns:mx="library://ns.adobe.com/flex/mx">
+
+
 	<fx:Declarations>
 		<pearson:PearsonContext contextView="{this}"/>
 	</fx:Declarations>
 
 
 	<fx:Style source="/../assets/css/styles.css"/>
-	
-	
+
+
 	<fx:Script>
 		<![CDATA[
 			import mx.events.FlexEvent;
-			
-			
-			
+
+
 			protected function windowedapplication1_creationCompleteHandler(event:FlexEvent):void
 			{
 //				nativeWindow.maximize();
 //				stage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
 			}
-			
+
+
 			protected function windowedapplication1_addedToStageHandler(event:Event):void
 			{
 				stage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
 				// TODO Auto-generated method stub
-				
+
 			}
-			
 		]]>
 	</fx:Script>
 
@@ -48,15 +48,20 @@
 		<s:State name="preload"/>
 		<s:State name="start"/>
 	</s:states>
-	
-	
-	<s:HGroup top="25" right="30">
-		<s:Label styleName="header_first" text="Mosaics :: " />
-		<s:Label styleName="header_second" text="Prototype" />
+
+
+	<s:HGroup top="25"
+			  right="30">
+		<s:Label styleName="header_first"
+				 text="Mosaics :: "/>
+		<s:Label styleName="header_second"
+				 text="Prototype"/>
 	</s:HGroup>
-	
-	
-	<s:Image top="30" left="30" source="@Embed(source='/../assets/images/logo_200.png')" />
+
+
+	<mx:Image top="30"
+			  left="30"
+			  source="@Embed(source='/../assets/images/logo_200.png')"/>
 
 
 	<view:MainView id="main"

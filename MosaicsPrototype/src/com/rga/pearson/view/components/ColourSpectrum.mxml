@@ -8,6 +8,7 @@
 	<fx:Script>
 		<![CDATA[
 			import com.greensock.TweenLite;
+			import com.rga.pearson.model.vo.ColourVO;
 
 			private var spectrumWidth:int = 400;
 
@@ -19,27 +20,42 @@
 			/**
 			 * Draws each of the swatches to the holder component
 			 */
-			public function updateSwatches( swatches:Vector.<uint> ):void
+			public function updateSwatches( swatches:Vector.<ColourVO> ):void
 			{
 				swatchWidth = ( width / swatches.length );
 
-				holder.alpha = 0;
-				holder.graphics.clear();
+				blended.alpha = 0;
+				blended.graphics.clear();
 				for( var i:int = 0 ; i < swatches.length ; i ++ )
 				{
-					holder.graphics.beginFill( swatches[i] );
-					holder.graphics.drawRect( i * swatchWidth, 0, swatchWidth, swatchHeight );
-					holder.graphics.endFill();
+					blended.graphics.beginFill( swatches[i].blended );
+					blended.graphics.drawRect( i * swatchWidth, 0, swatchWidth, swatchHeight );
+					blended.graphics.endFill();
 				}
 
-				holder.width = spectrumWidth;
-				TweenLite.to( holder, 0.6, { alpha:1 });
+				blended.width = spectrumWidth;
+				TweenLite.to( blended, 0.6, { alpha:1 });
+
+//				unblended.alpha = 0;
+//				unblended.graphics.clear();
+//				for( i = 0 ; i < swatches.length ; i ++ )
+//				{
+//					unblended.graphics.beginFill( swatches[i].raw );
+//					unblended.graphics.drawRect( i * swatchWidth, 0, swatchWidth, swatchHeight );
+//					unblended.graphics.endFill();
+//				}
+//
+//				unblended.width = spectrumWidth;
+//				TweenLite.to( unblended, 0.6, { alpha:1 });
 			}
 		]]>
 	</fx:Script>
 
 
-	<mx:UIComponent id="holder"/>
+	<mx:UIComponent id="blended"/>
+	<mx:UIComponent id="unblended"
+					y="20"
+					visible="false"/>
 
 
 </s:HGroup>

@@ -1,7 +1,7 @@
 package com.rga.pearson.model.colour
 {
+	import com.rga.pearson.model.vo.ColourVO;
 	import com.rga.pearson.utils.ColourUtils;
-	import com.rga.pearson.utils.NumberUtils;
 
 	public class ColourRange
 	{
@@ -11,31 +11,36 @@ package com.rga.pearson.model.colour
 
 		public var quantity : int;
 
+		public var percentOfTotal : int;
+
 		public var next : ColourRange;
 
 		public var mergeRatio : int = 4;
+
+		public var randomisation : Number;
 
 		public var mergePoint : int;
 
 		public var startPoint : int;
 
-		public var swatches : Vector.<uint> = new Vector.<uint>();
+		public var swatches : Vector.<ColourVO> = new Vector.<ColourVO>();
 
 
 		/**
 		 * Constructor.
 		 */
-		public function ColourRange( colour:uint, id:int )
+		public function ColourRange( colour:uint, id:int, randomisation:Number = 0 )
 		{
 			this.colour = colour;
 			this.id = id;
+			this.randomisation = randomisation;
 		}
 
 
 		/**
 		 * Returns all colours in the sequence
 		 */
-		public function getSwatches():Vector.<uint>
+		public function getSwatches():Vector.<ColourVO>
 		{
 			if( next )
 				return swatches.concat( next.getSwatches() );
@@ -66,7 +71,7 @@ package com.rga.pearson.model.colour
 		{
 			for( var i:int = startPoint ; i < quantity ; ++ i )
 			{
-				swatches.push( colour );
+				swatches.push( new ColourVO( colour, colour ) );
 			}
 		}
 
@@ -76,7 +81,7 @@ package com.rga.pearson.model.colour
 		 */
 		private function extrapolateSequence():void
 		{
-			var i:int, mergeRange:int, colourStep:uint, step:int, progress:Number;
+			var i:int, mergeRange:int, colourStep:uint, step:int, progress:Number, blended:uint;
 
 			mergePoint = ( quantity - mergeRatio );
 			next.startPoint = mergeRatio;
@@ -84,24 +89,18 @@ package com.rga.pearson.model.colour
 			mergeRange = ( quantity - mergePoint ) + next.startPoint;
 			colourStep = ( next.colour - colour ) / mergeRange;
 
-			trace( "StartColour :: "+colour+" EndColour ::" +next.colour );
-
 			for( i = startPoint ; i < ( quantity + next.startPoint ) ; ++ i )
 			{
+				blended = colour;
 				if( i >= mergePoint )
 				{
 					progress = ( i - mergePoint ) * ( mergeRange / 255 );
-//					progress += NumberUtils.randomRange( -2, 2 );
-					colour = ColourUtils.interpolate( colour, next.colour, progress, 30 );
-					
-					trace("Next ::" +colour );
+					colour = ColourUtils.randomInterpolate( colour, next.colour, progress, 20 );
 
 					step ++;
 				}
-				swatches.push( colour );
+				swatches.push( new ColourVO( colour, blended ) );
 			}
-
-//			trace( id+" :: ColourRange.swatches( "+swatches.length+" )" );
 
 			next.extrapolate();
 		}

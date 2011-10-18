@@ -8,9 +8,11 @@
 
 	<fx:Script>
 		<![CDATA[
+			import com.greensock.TweenLite;
 			import com.rga.pearson.model.constants.ColourConstants;
 			import com.rga.pearson.model.constants.GridConstants;
-			
+			import com.rga.pearson.utils.StringUtils;
+
 			import mx.collections.ArrayCollection;
 
 			private var segments:Vector.<GridCellSeqment> = new Vector.<GridCellSeqment>();
@@ -19,7 +21,11 @@
 
 			private var _isGridDirty : Boolean = false;
 
+			private var _isTitleDirty : Boolean = false;
+
 			private var _newGrid : ArrayCollection;
+
+			private var _title : String;
 
 
 			/**
@@ -31,6 +37,21 @@
 				_newGrid = grid;
 
 				invalidateDisplayList();
+			}
+
+
+			/**
+			 * Re-renders the book title
+			 */
+			public function renderTitle( title:String = "" ):void
+			{
+				if( !StringUtils.isEmpty( title ) && title != _title )
+				{
+					_title = title;
+					_isTitleDirty = true;
+				}
+
+				invalidateProperties();
 			}
 
 
@@ -91,16 +112,50 @@
 						count ++;
 				}
 				_isGridDirty = false;
+
+			}
+
+
+			override protected function commitProperties():void
+			{
+				super.commitProperties();
+
+				if( _isTitleDirty )
+				{
+					discipline.text = _title;
+
+					discipline.alpha = 0;
+					TweenLite.to( discipline, 0.4, { alpha:1 });
+
+					_isTitleDirty = false;
+				}
 			}
 		]]>
 	</fx:Script>
 
-	<mx:UIComponent id="grid"
-					mask="{gridMask}" top="20"/>
+
+	<mx:Image source="@Embed(source='/../assets/images/book_cover1.png')"/>
+
+	<s:Group id="gridGroup"
+			 left="180"
+			 top="330">
+		<mx:UIComponent id="grid"
+						mask="{gridMask}"
+						top="20"/>
 
 
-	<grid:GridMask id="gridMask"
-				   visible="false" top="20"/>
+		<grid:GridMask id="gridMask"
+					   visible="false"
+					   width="{GridConstants.NUM_COLS*GridConstants.CELL_SIZE}"
+					   height="{GridConstants.NUM_ROWS*GridConstants.CELL_SIZE}"
+					   top="20"/>
+	</s:Group>
 
+	<s:Label id="discipline"
+			 width="450"
+			 text="This is a long book title"
+			 styleName="book_cover_title"
+			 top="80"
+			 left="30"/>
 
 </s:Group>

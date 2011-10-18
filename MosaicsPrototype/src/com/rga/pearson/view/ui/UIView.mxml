@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:VGroup xmlns:fx="http://ns.adobe.com/mxml/2009"
-		  xmlns:s="library://ns.adobe.com/flex/spark"
-		  xmlns:components="com.rga.pearson.view.components.*"
-		  gap="0"
-		  xmlns:mx="library://ns.adobe.com/flex/mx">
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:components="com.rga.pearson.view.components.*"
+		 xmlns:mx="library://ns.adobe.com/flex/mx">
 
 
 	<fx:Metadata>
@@ -18,7 +17,7 @@
 			import com.rga.pearson.model.constants.ColourConstants;
 			import com.rga.pearson.model.constants.GridConstants;
 			import com.rga.pearson.model.vo.AssetConfigVO;
-			
+
 			import mx.collections.ArrayCollection;
 
 			private var _assetsVo : AssetConfigVO;
@@ -73,14 +72,15 @@
 			/**
 			 * Sets the sub categories
 			 */
-			public function setSubCategories( val:ArrayCollection ):void
+			protected function assetslider1_updateHandler(event:AssetSliderEvent):void
 			{
-				subCategories.dataProvider = val;
-				subCategories.selectedIndex = 0;
+				event.stopImmediatePropagation();
+
+				dispatchEvent( new AssetSliderEvent( AssetSliderEvent.UPDATE_ASSETS ));
 			}
 
 
-			protected function assetslider1_updateHandler(event:AssetSliderEvent):void
+			protected function stepper_changeHandler(event:Event):void
 			{
 				event.stopImmediatePropagation();
 
@@ -90,87 +90,102 @@
 	</fx:Script>
 
 
-	<components:UIPanel title="Configuration" width="100%">
-
-		<s:HGroup>
-			<s:Label text="Discipline"
-					 styleName="iu_label"
-					 width="100"/>
-			<s:DropDownList id="categories"
-							width="345"/>
-		</s:HGroup>
-
-		<s:HGroup>
-			<s:Label text="Sub Category"
-					 styleName="iu_label"
-					 width="100"/>
-			<s:DropDownList id="subCategories"
-							width="345"/>
-		</s:HGroup>
-
-	</components:UIPanel>
-
-	
-	<components:UIPanel title="Asset specification" width="100%">
-
-		<components:AssetSlider id="books"
-								colour="{ColourConstants.GREEN}"
-								text="{AssetConstants.BOOKS}"
-								update_asset="assetslider1_updateHandler(event)"/>
-		<components:AssetSlider id="videos"
-								colour="{ColourConstants.PINK}"
-								text="{AssetConstants.VIDEOS}"
-								update_asset="assetslider1_updateHandler(event)"/>
-		<components:AssetSlider id="images"
-								colour="{ColourConstants.YELLOW}"
-								text="{AssetConstants.IMAGES}"
-								update_asset="assetslider1_updateHandler(event)"/>
-		<components:AssetSlider id="docs"
-								colour="{ColourConstants.BLUE}"
-								text="{AssetConstants.DOCUMENTS}"
-								update_asset="assetslider1_updateHandler(event)"/>
-		<components:AssetSlider id="interactive"
-								colour="{ColourConstants.ORANGE}"
-								text="{AssetConstants.INTERACTIVE}"
-								update_asset="assetslider1_updateHandler(event)"/>
-
-	</components:UIPanel>
-
-
-	<components:UIPanel  width="100%" height="100"
-						title="Colour distribution">
-		
-		<components:layout>
-			<s:VerticalLayout horizontalAlign="right"
-							  verticalAlign="top"
-							  gap="10"
-							  paddingRight="0"
-							  paddingTop="60"
-							  paddingLeft="46"/>
-		</components:layout>
-
-		<components:ColourSpectrum id="spectrum" width="100%"/>
-
-	</components:UIPanel>
-
-
-	<components:UIPanel height="60" width="100%">
-
-		<components:layout>
-			<s:VerticalLayout horizontalAlign="left"
-							  verticalAlign="top"
-							  gap="10"
-							  paddingTop="20"
-							  paddingRight="30"
-							  paddingBottom="40"
-							  paddingLeft="20"/>
-		</components:layout>
-
-		<s:Button id="renderButton"
-				  label="Generate Mosaic"/>
-
-	</components:UIPanel>
+	<s:Group width="100%"
+			 height="100%">
+		<s:Rect width="100%"
+				height="100%">
+			<s:fill>
+				<s:SolidColor color="0x000000"/>
+			</s:fill>
+		</s:Rect>
+	</s:Group>
 
 
 
-</s:VGroup>
+	<s:VGroup width="100%"
+			  gap="0"
+			  top="6">
+
+		<components:UIPanel title="Configuration"
+							width="100%">
+
+			<s:HGroup>
+				<s:Label text="Discipline"
+						 styleName="iu_label"
+						 width="100"/>
+				<s:DropDownList id="categories"
+								width="345"/>
+			</s:HGroup>
+
+		</components:UIPanel>
+
+
+		<components:UIPanel title="Asset specification"
+							width="100%">
+
+			<components:AssetSlider id="books"
+									colour="{ColourConstants.GREEN}"
+									text="{AssetConstants.BOOKS}"
+									update_asset="assetslider1_updateHandler(event)"/>
+			<components:AssetSlider id="videos"
+									colour="{ColourConstants.PINK}"
+									text="{AssetConstants.VIDEOS}"
+									update_asset="assetslider1_updateHandler(event)"/>
+			<components:AssetSlider id="images"
+									colour="{ColourConstants.YELLOW}"
+									text="{AssetConstants.IMAGES}"
+									update_asset="assetslider1_updateHandler(event)"/>
+			<components:AssetSlider id="docs"
+									colour="{ColourConstants.BLUE}"
+									text="{AssetConstants.DOCUMENTS}"
+									update_asset="assetslider1_updateHandler(event)"/>
+			<components:AssetSlider id="interactive"
+									colour="{ColourConstants.ORANGE}"
+									text="{AssetConstants.INTERACTIVE}"
+									update_asset="assetslider1_updateHandler(event)"/>
+
+		</components:UIPanel>
+
+
+		<components:UIPanel width="100%"
+							height="100"
+							title="Colour distribution">
+
+			<components:layout>
+				<s:VerticalLayout horizontalAlign="right"
+								  verticalAlign="top"
+								  gap="10"
+								  paddingRight="0"
+								  paddingTop="60"
+								  paddingLeft="46"/>
+			</components:layout>
+
+			<components:ColourSpectrum id="spectrum"
+									   width="100%"/>
+		</components:UIPanel>
+
+
+		<components:UIPanel height="60"
+							width="100%">
+
+			<components:layout>
+				<s:VerticalLayout horizontalAlign="left"
+								  verticalAlign="top"
+								  gap="10"
+								  paddingTop="20"
+								  paddingRight="30"
+								  paddingBottom="40"
+								  paddingLeft="20"/>
+			</components:layout>
+
+			<s:Button id="renderButton"
+					  label="Generate Random Mosaic"/>
+
+		</components:UIPanel>
+
+
+	</s:VGroup>
+
+
+
+</s:Group>

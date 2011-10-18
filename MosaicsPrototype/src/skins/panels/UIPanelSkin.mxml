@@ -25,7 +25,8 @@
 			width="1"
 			height="100%">
 		<s:fill>
-			<s:SolidColor color="#444444" alpha="0.5"/>
+			<s:SolidColor color="#444444"
+						  alpha="0"/>
 		</s:fill>
 	</s:Rect>
 
@@ -34,7 +35,8 @@
 			height="1"
 			bottom="0">
 		<s:fill>
-			<s:SolidColor color="#444444" alpha="0.5"/>
+			<s:SolidColor color="#444444"
+						  alpha="0"/>
 		</s:fill>
 	</s:Rect>
 
@@ -51,7 +53,7 @@
 							  verticalAlign="top"
 							  gap="10"
 							  paddingTop="60"
-							  paddingRight="0"
+							  paddingRight="30"
 							  paddingBottom="20"
 							  paddingLeft="30"/>
 		</s:layout>

@@ -1,15 +1,17 @@
+
 package com.rga.pearson.view.grid
 {
+	import com.rga.pearson.event.ColourModelEvent;
 	import com.rga.pearson.event.DisciplineEvent;
 	import com.rga.pearson.event.RenderEvent;
 	import com.rga.pearson.model.CategoryModel;
 	import com.rga.pearson.model.ColourModel;
 	import com.rga.pearson.model.GridModel;
-	
+
 	import de.polygonal.ds.Array2;
-	
+
 	import mx.collections.ArrayCollection;
-	
+
 	import org.robotlegs.mvcs.Mediator;
 
 	public class GridViewMediator extends Mediator
@@ -38,8 +40,6 @@ package com.rga.pearson.view.grid
 			eventMap.mapListener( eventDispatcher, RenderEvent.FULL_RENDER, renderFullHandler );
 			eventMap.mapListener( eventDispatcher, RenderEvent.SEGMENT_RENDER, renderSegmentHandler );
 			eventMap.mapListener( eventDispatcher, DisciplineEvent.NEW_DISCIPLINE, newDisciplineHandler );
-			
-			renderFullHandler();
 		}
 
 
@@ -53,11 +53,14 @@ package com.rga.pearson.view.grid
 			currentSubCategory = categoryModel.currentSubCategory;
 			numSubCategories = categoryModel.getSubCategories( currentSubCategory ).length;
 
-			distribution = gridModel.getDistribution( currentSubCategory, numSubCategories );
+			distribution = gridModel.getNewDistribution( currentSubCategory, numSubCategories );
 			colourDistribution = colourModel.colourDistribution( distribution, gridModel.getAssets() );
 
-			dispatch( new RenderEvent( RenderEvent.SAVE_GRID ));
 			view.renderSegments( colourDistribution );
+			view.renderTitle( categoryModel.getCurrentTitle() );
+
+//			dispatch( new RenderEvent( RenderEvent.SAVE_GRID ));
+			dispatch( new ColourModelEvent( ColourModelEvent.SWATCHES_UPDATED ));
 		}
 
 
@@ -68,10 +71,12 @@ package com.rga.pearson.view.grid
 		{
 			var currentSubCategory:int, numSubCategories:int, distribution:Array2, colourDistribution:ArrayCollection;
 
-			distribution = gridModel.updateDistribution( currentSubCategory, numSubCategories );
+			distribution = gridModel.getDistribution();
 			colourDistribution = colourModel.colourDistribution( distribution, gridModel.getAssets() );
 
 			view.renderSegments( colourDistribution );
+
+			dispatch( new ColourModelEvent( ColourModelEvent.SWATCHES_UPDATED ));
 		}
 
 
@@ -81,6 +86,7 @@ package com.rga.pearson.view.grid
 		private function newDisciplineHandler( event:DisciplineEvent ):void
 		{
 			view.gridMask.setShape( event.discipline );
+			view.renderTitle( categoryModel.getCategories()[ event.discipline ] );
 		}
 	}
 }

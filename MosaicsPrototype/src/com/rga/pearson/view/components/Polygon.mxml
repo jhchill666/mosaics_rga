@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:UIComponent xmlns:fx="http://ns.adobe.com/mxml/2009"
+				xmlns:s="library://ns.adobe.com/flex/spark"
+				xmlns:mx="library://ns.adobe.com/flex/mx">
+
+
+	<fx:Declarations>
+		<s:Graphic>
+			<s:Path data="M242.95 105.8 274.3 137.8 262.35 180.95 218.95 192.1 187.6 160.15 199.65 117 242.95 105.8">
+				<s:fill>
+					<s:SolidColor color="#00FF00"/>
+				</s:fill>
+			</s:Path>
+		</s:Graphic>
+	</fx:Declarations>
+
+
+</mx:UIComponent>

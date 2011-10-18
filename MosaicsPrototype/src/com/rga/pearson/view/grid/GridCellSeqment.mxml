@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
-		 xmlns:s="library://ns.adobe.com/flex/spark">
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx">
 
 
 	<fx:Script>
 		<![CDATA[
+			import com.greensock.TweenLite;
+			import com.greensock.TweenMax;
+			import com.rga.pearson.model.constants.ColourConstants;
 			import com.rga.pearson.model.constants.GridConstants;
 			import com.rga.pearson.model.vo.Segment;
 
@@ -27,6 +31,14 @@
 
 				if( !_isTopLeft )
 					_corner.offset( GridConstants.CELL_SIZE, GridConstants.CELL_SIZE );
+
+				triangle.graphics.clear();
+				triangle.graphics.beginFill( ColourConstants.INACTIVE_CELL );
+				triangle.graphics.moveTo( _corner.x, _corner.y );
+				triangle.graphics.lineTo( GridConstants.CELL_SIZE, 0 );
+				triangle.graphics.lineTo( 0, GridConstants.CELL_SIZE );
+				triangle.graphics.lineTo( _corner.x, _corner.y );
+				triangle.graphics.endFill();
 			}
 
 
@@ -63,16 +75,19 @@
 				else
 					_isCellDirty = false;
 
-				graphics.clear();
-				graphics.beginFill( _segment.rawColour );
-				graphics.moveTo( _corner.x, _corner.y );
-				graphics.lineTo( GridConstants.CELL_SIZE, 0 );
-				graphics.lineTo( 0, GridConstants.CELL_SIZE );
-				graphics.lineTo( _corner.x, _corner.y );
-				graphics.endFill();
+				var speed:Number, delay:Number;
+
+				speed = ( _segment.showIndex == -1 ) ? 0 : 0;
+				delay = ( _segment.showIndex == -1 ) ? 0 : ( _segment.showIndex * 0.1 );
+				_segment.showIndex = -1;
+
+				TweenMax.to( triangle, speed, { delay:delay, colorTransform:{ tint:_segment.rawColour, tintAmount:1 }});
 			}
 		]]>
 	</fx:Script>
+
+
+	<mx:UIComponent id="triangle"/>
 
 
 </s:Group>

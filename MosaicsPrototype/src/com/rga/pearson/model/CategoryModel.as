@@ -1,13 +1,13 @@
 package com.rga.pearson.model
 {
 	import mx.collections.ArrayCollection;
-	
+
 	import org.robotlegs.mvcs.Actor;
-	
+
 	public class CategoryModel extends Actor
 	{
 		public var currentSubCategory:int;
-		
+
 		/**
 		 * Top level 'dscipline' categories
 		 */
@@ -17,21 +17,21 @@ package com.rga.pearson.model
 			"Professional and Applied Sciences",
 			"Formal Sciences",
 			"Social Sciences"
-		);
+			);
 
 		/**
-		 * Natural Sciences sub categories 
-		 */		
+		 * Natural Sciences sub categories
+		 */
 		private var naturalSciences : Array = new Array(
 			"Space Sciences",
 			"Earth Sciences",
 			"Life Sciences",
 			"Chemistry",
 			"Physics"
-		);
-		
+			);
+
 		/**
-		 * Humanities sub categories 
+		 * Humanities sub categories
 		 */
 		private var humanities : Array = new Array(
 			"History",
@@ -41,10 +41,10 @@ package com.rga.pearson.model
 			"Philosophy",
 			"Religion",
 			"Visual Arts"
-		);
-		
+			);
+
 		/**
-		 * Professions sub categories 
+		 * Professions sub categories
 		 */
 		private var professions : Array = new Array(
 			"Agriculture",
@@ -64,10 +64,10 @@ package com.rga.pearson.model
 			"Public Administration",
 			"Social Work",
 			"Transportation"
-		);
-		
+			);
+
 		/**
-		 * Formal Sciences sub categories 
+		 * Formal Sciences sub categories
 		 */
 		private var formalSciences : Array = new Array(
 			"Computer Sciences",
@@ -75,10 +75,10 @@ package com.rga.pearson.model
 			"Mathematics",
 			"Statistics",
 			"Systems Science"
-		);
-		
+			);
+
 		/**
-		 * Social Sciences sub categories 
+		 * Social Sciences sub categories
 		 */
 		private var socialSciences : Array = new Array(
 			"Anthropology",
@@ -91,39 +91,47 @@ package com.rga.pearson.model
 			"Political Science",
 			"Psychology",
 			"Socialogy"
-		);
-		
+			);
+
+
 		/**
 		 * Returns top level categories
 		 */
-		public function getCategories () : ArrayCollection
+		public function getCategories():ArrayCollection
 		{
 			return new ArrayCollection( categories );
 		}
-		
+
+
+		public function getCurrentTitle():String
+		{
+			return getCategories()[ currentSubCategory ];
+		}
+
+
 		/**
-		 * Returns sub categories according to drop down list choice 
-		 */		
-		public function getSubCategories ( index:int ) : ArrayCollection
+		 * Returns sub categories according to drop down list choice
+		 */
+		public function getSubCategories( index:int ):ArrayCollection
 		{
 			var subCategories:Array;
 			currentSubCategory = index;
-			
+
 			switch( index )
 			{
-				case 0 : 
+				case 0:
 					subCategories = naturalSciences;
 					break;
-				case 1 : 
+				case 1:
 					subCategories = humanities;
 					break;
-				case 2 : 
+				case 2:
 					subCategories = professions;
 					break;
-				case 3 : 
+				case 3:
 					subCategories = formalSciences;
 					break;
-				case 4 : 
+				case 4:
 					subCategories = socialSciences;
 					break;
 			}

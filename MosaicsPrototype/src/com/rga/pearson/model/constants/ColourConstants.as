@@ -19,7 +19,7 @@ package com.rga.pearson.model.constants
 		public static const ORANGE : uint = 0xEA6629;
 
 		// inactive
-		public static const INACTIVE_CELL : uint = 0x323232;
+		public static const INACTIVE_CELL : uint = 0x000000;
 
 
 		/**

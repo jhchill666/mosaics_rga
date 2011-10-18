@@ -6,12 +6,14 @@ package com.rga.pearson.model
 	import com.rga.pearson.model.constants.ColourConstants;
 	import com.rga.pearson.model.constants.GridConstants;
 	import com.rga.pearson.model.vo.AssetConfigVO;
+	import com.rga.pearson.model.vo.ColourVO;
 	import com.rga.pearson.model.vo.Segment;
-	
+	import com.rga.pearson.utils.NumberUtils;
+
 	import de.polygonal.ds.Array2;
-	
+
 	import mx.collections.ArrayCollection;
-	
+
 	import org.robotlegs.mvcs.Actor;
 
 	public class ColourModel extends Actor
@@ -20,9 +22,9 @@ package com.rga.pearson.model
 
 		private var mergePoints:Vector.<int>;
 
-		private var totalAssets : int;
+		public var swatches : Vector.<ColourVO>;
 
-		public var swatches : Vector.<uint>;
+		public var randomisation : Number;
 
 
 		/**
@@ -32,7 +34,7 @@ package com.rga.pearson.model
 		 */
 		public function colourDistribution( array:Array2, assetsVo:AssetConfigVO ):ArrayCollection
 		{
-			var spectrum:Vector.<ColourRange>;
+			var spectrum:Vector.<ColourRange>, collection:ArrayCollection;
 
 			this.assetsVo = assetsVo;
 
@@ -41,8 +43,6 @@ package com.rga.pearson.model
 
 			swatches = spectrum[0].getSwatches();
 //			swatches = transposeColours( swatches );
-
-			dispatch( new ColourModelEvent( ColourModelEvent.SWATCHES_UPDATED ));
 
 			return getColouredDistribution( array, swatches );
 		}
@@ -55,17 +55,18 @@ package com.rga.pearson.model
 		 */
 		private function getSpectrum():Vector.<ColourRange>
 		{
-			var i:int, range:ColourRange, colours:Vector.<uint>, types:Vector.<String>, spectrum:Vector.<ColourRange> = new Vector.<ColourRange>();
+			var i:int, range:ColourRange, percentOfTotal:Number, numAssets:int, colours:Vector.<uint>, types:Vector.<String>, spectrum:Vector.<ColourRange> = new Vector.<ColourRange>();
 
 			colours = ColourConstants.getColours();
 			types = AssetConstants.getTypes();
-			totalAssets = 0;
 
-			for( i = 0 ; i < colours.length ; ++ i )
+			for( i = 0 ; i < types.length ; ++ i )
 			{
-				range = new ColourRange( colours[i], i );
-				range.quantity = assetsVo.getAsset( types[i] );
-				totalAssets += range.quantity;
+				numAssets = assetsVo.getAsset( types[i] );
+				percentOfTotal = NumberUtils.percent( numAssets, assetsVo.active );
+
+				range = new ColourRange( colours[i], i, randomisation );
+				range.quantity = Math.floor( assetsVo.active * percentOfTotal );
 
 				if( i > 0 )
 					spectrum[ i - 1 ].next = range;
@@ -73,53 +74,32 @@ package com.rga.pearson.model
 				spectrum.push( range );
 			}
 
-			return spectrum;
+			return checkHaveSpectrum( spectrum );
 		}
 
 
-		/*
-
-		   array2 = new Array2( GridConstants.NUM_COLS*2, GridConstants.NUM_ROWS );
-
+		/**
+		 * Check we have a valid spectrum, otherwise create a blank one
 		 */
-
-		private function transposeColours( swatches:Vector.<uint> ):Vector.<uint>
+		private function checkHaveSpectrum( spectrum:Vector.<ColourRange> ):Vector.<ColourRange>
 		{
-			var assets:Vector.<String>, a:int, asset:int, r:int, c:int, transposed:Vector.<uint>, index:int, transIndex:int;
+			var range:ColourRange;
 
-			assets = AssetConstants.getTypes();
-			transposed = new Vector.<uint>( swatches.length );
-			index = 0;
-
-			try
+			if( spectrum.length == 0 )
 			{
-				for( a = 0 ; a < AssetConstants.size() ; a ++ )
-				{
-					asset = assetsVo.getAsset( assets[a] );
-					for( r = AssetConstants.size() ; r != 0 ; --r )
-					{
-						for( c = 0 ; c < asset ; c ++ )
-						{
-							transIndex = r * GridConstants.NUM_COLS + c;
-							transposed[ transIndex ] = swatches[ index ];
+				range = new ColourRange( ColourConstants.INACTIVE_CELL, 0, randomisation );
+				range.quantity = assetsVo.active;
 
-							index ++
-						}
-					}
-				}
+				spectrum.push( range );
 			}
-			catch( er:* )
-			{
-			}
-
-			return transposed;
+			return spectrum;
 		}
 
 
 		/**
 		 * Assigns the extrapolated colour swatches to each of the segments
 		 */
-		private function getColouredDistribution( array:Array2, colours:Vector.<uint> ):ArrayCollection
+		private function getColouredDistribution( array:Array2, colours:Vector.<ColourVO> ):ArrayCollection
 		{
 			var i:int, segCount:int, segment:Segment, arr:Array = array.toArray();
 
@@ -128,11 +108,12 @@ package com.rga.pearson.model
 			for( i = 0 ; i < arr.length ; i ++ )
 			{
 				segment = arr[i] as Segment;
-				
+
 				if( segment.rawColour == ColourConstants.INACTIVE_CELL )
 					continue;
 
-				segment.rawColour = colours[segCount];
+				segment.rawColour = colours[segCount].raw;
+				segment.blendedColour = colours[segCount].blended;
 				segCount ++;
 			}
 			return new ArrayCollection( arr );

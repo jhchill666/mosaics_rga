@@ -12,6 +12,15 @@
 	fontWeight: normal;
 }
 
+.book_cover_title
+{
+	color: #FFFFFF;
+	fontSize: 100px;
+	fontFamily: miso;
+	fontWeight: bold;
+	lineHeight: 74;
+}
+
 .header_first
 {
 	color: #FFFFFF;
@@ -30,7 +39,7 @@
 .ui_title
 {
 	color: #DDDDDD;
-	fontSize: 24px;
+	fontSize: 18px;
 	fontFamily: miso;
 	fontWeight: bold
 }

@@ -11,8 +11,6 @@ package com.rga.pearson.view.ui
 
 	import flash.events.MouseEvent;
 
-	import mx.collections.ArrayCollection;
-
 	import org.robotlegs.mvcs.Mediator;
 
 	import spark.events.DropDownEvent;
@@ -41,14 +39,12 @@ package com.rga.pearson.view.ui
 			super.onRegister();
 
 			eventMap.mapListener( view.categories, DropDownEvent.CLOSE, categoryChosenhandler );
-			eventMap.mapListener( view.subCategories, DropDownEvent.CLOSE, subCategoryChosenhandler );
 			eventMap.mapListener( view.renderButton, MouseEvent.CLICK, renderHanler );
 			eventMap.mapListener( view, AssetSliderEvent.UPDATE_ASSETS, updateAssetsHandler );
 			eventMap.mapListener( eventDispatcher, ColourModelEvent.SWATCHES_UPDATED, updateSpectrumHandler );
 
 			view.setTotals( gridModel.getAssets() );
 			view.setCategories( categoryModel.getCategories() );
-			view.setSubCategories( categoryModel.getSubCategories( 0 ));
 		}
 
 
@@ -57,23 +53,7 @@ package com.rga.pearson.view.ui
 		 */
 		private function categoryChosenhandler( event:DropDownEvent ):void
 		{
-			var index:int, subCategories:ArrayCollection;
-
-			index = view.categories.selectedIndex;
-			subCategories = categoryModel.getSubCategories( index );
-
-			view.setSubCategories( subCategories );
-
-			dispatch( new DisciplineEvent( DisciplineEvent.NEW_DISCIPLINE, index ));
-		}
-
-
-		/**
-		 * Sub-category drop down list handler
-		 */
-		private function subCategoryChosenhandler( event:DropDownEvent ):void
-		{
-
+			dispatch( new DisciplineEvent( DisciplineEvent.NEW_DISCIPLINE, view.categories.selectedIndex ));
 		}
 
 
@@ -87,7 +67,8 @@ package com.rga.pearson.view.ui
 			assetsVo = gridModel.getAssets();
 			updatedAssets = view.updateAssetsVo( assetsVo );
 
-			gridModel.setAssets( updatedAssets );
+//			gridModel.setAssets( updatedAssets );
+//			colourModel.randomisation = view.stepper.value;
 
 			dispatch( new RenderEvent( RenderEvent.SEGMENT_RENDER ));
 		}
@@ -96,7 +77,7 @@ package com.rga.pearson.view.ui
 		/**
 		 * An asset slider has been updated so update the model
 		 */
-		private function updateSpectrumHandler( event:ColourModelEvent ):void
+		private function updateSpectrumHandler( event:ColourModelEvent = null ):void
 		{
 			view.spectrum.updateSwatches( colourModel.swatches );
 		}
@@ -107,16 +88,10 @@ package com.rga.pearson.view.ui
 		 */
 		private function renderHanler( event:MouseEvent ):void
 		{
-			var index:int, subCategories:ArrayCollection;
-			
-			index = Math.random() * ( categoryModel.getCategories().length );
-			subCategories = categoryModel.getSubCategories( index );
-			
-			view.categories.selectedIndex = index;
-			view.setSubCategories( subCategories );
-			
+			view.categories.selectedIndex = Math.random() * ( categoryModel.getCategories().length );
+
 			dispatch( new RenderEvent( RenderEvent.FULL_RENDER ));
-			dispatch( new DisciplineEvent( DisciplineEvent.NEW_DISCIPLINE, index ));
+			dispatch( new DisciplineEvent( DisciplineEvent.NEW_DISCIPLINE, view.categories.selectedIndex ));
 		}
 	}
 }

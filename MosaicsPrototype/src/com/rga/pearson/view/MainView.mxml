@@ -17,23 +17,31 @@
 
 
 
-	<s:SkinnableContainer backgroundColor="0xCCCCCC" backgroundAlpha="0" width="620" height="600" >
-		
+	<s:SkinnableContainer backgroundColor="0xCCCCCC"
+						  backgroundAlpha="0"
+						  height="798">
+
 		<s:layout>
-			<s:HorizontalLayout horizontalAlign="left" verticalAlign="top"/>
+			<s:HorizontalLayout horizontalAlign="center"
+								verticalAlign="top"
+								gap="40"/>
 		</s:layout>
-		
+
 		<s:VGroup>
-			
-			<grid:GridView width="120" top="30" height="120" id="grid"/>
-			<components:GridThumbnails id="thumnails" />
-			
+
+			<grid:GridView width="550"
+						   top="30"
+						   height="798"
+						   id="grid"/>
+			<components:GridThumbnails id="thumnails"/>
+
 		</s:VGroup>
-			
-		
-		<ui:UIView width="500"/>
-		
-		
+
+
+		<ui:UIView width="550"
+				   height="600"/>
+
+
 	</s:SkinnableContainer>
 
 
