@@ -39,6 +39,23 @@ package com.rga.pearson.utils
 		}
 
 
+		public static function varyColour(colour:uint, amount:Number = 0 ):uint
+		{
+			var alpha:uint = ( colour >> 24 ) & 0xFF;
+			var red:uint = ( colour >> 16 ) & 0xFF;
+			var green:uint = ( colour >>  8 ) & 0xFF;
+			var blue:uint =   colour         & 0xFF;
+
+			var resultA:uint = ( alpha + amount );
+			var resultR:uint = ( red + amount );
+			var resultG:uint = ( green + amount );
+			var resultB:uint = ( blue + amount );
+			var resultColor:uint = resultA << 24 | resultR << 16 | resultG << 8 | resultB;
+
+			return resultColor;
+		}
+
+
 		public static function interpolate(fromColor:uint, toColor:uint, progress:Number ):uint
 		{
 			var q:Number = 1-progress;

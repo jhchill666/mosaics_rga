@@ -17,6 +17,7 @@
 			import com.rga.pearson.model.constants.ColourConstants;
 			import com.rga.pearson.model.constants.GridConstants;
 			import com.rga.pearson.model.vo.AssetConfigVO;
+			import com.rga.pearson.utils.NumberUtils;
 
 			import mx.collections.ArrayCollection;
 
@@ -40,6 +41,8 @@
 				videos.maximumAssets = assets.maximum;
 				videos.currentAssets = assets.getAsset( AssetConstants.VIDEOS );
 
+				activeSegments.value = int( NumberUtils.percent( assets.active, assets.maximum ) * 100 );
+
 				_assetsVo = assets;
 			}
 
@@ -49,12 +52,12 @@
 			 */
 			public function updateAssetsVo( assetsVo:AssetConfigVO ):AssetConfigVO
 			{
-				assetsVo.updateAsset( AssetConstants.BOOKS, books.slider.value, false );
-				assetsVo.updateAsset( AssetConstants.DOCUMENTS, docs.slider.value, false );
-				assetsVo.updateAsset( AssetConstants.IMAGES, images.slider.value, false );
-				assetsVo.updateAsset( AssetConstants.INTERACTIVE, interactive.slider.value, false );
-				assetsVo.updateAsset( AssetConstants.VIDEOS, videos.slider.value, false );
-				assetsVo.updateTotals();
+				assetsVo.updateAsset( AssetConstants.BOOKS, books.slider.value );
+				assetsVo.updateAsset( AssetConstants.DOCUMENTS, docs.slider.value );
+				assetsVo.updateAsset( AssetConstants.IMAGES, images.slider.value );
+				assetsVo.updateAsset( AssetConstants.INTERACTIVE, interactive.slider.value );
+				assetsVo.updateAsset( AssetConstants.VIDEOS, videos.slider.value );
+				assetsVo.updatePercentages();
 				return assetsVo;
 			}
 
@@ -109,13 +112,29 @@
 		<components:UIPanel title="Configuration"
 							width="100%">
 
-			<s:HGroup>
+			<s:HGroup verticalAlign="middle">
 				<s:Label text="Discipline"
 						 styleName="iu_label"
 						 width="100"/>
 				<s:DropDownList id="categories"
 								width="345"/>
 			</s:HGroup>
+
+			<mx:Spacer height="6"/>
+
+			<s:HGroup verticalAlign="middle">
+				<s:Label text="Active segments (%)"
+						 styleName="iu_label"
+						 width="100"/>
+				<s:NumericStepper id="activeSegments"
+								  minimum="0"
+								  maximum="100"
+								  styleName="slider_label"/>
+				<s:Label text="Click 'Render Mosaic' button to update"
+						 styleName="iu_label"
+						 width="272"/>
+			</s:HGroup>
+
 
 		</components:UIPanel>
 
@@ -179,7 +198,7 @@
 			</components:layout>
 
 			<s:Button id="renderButton"
-					  label="Generate Random Mosaic"/>
+					  label="Render Mosaic"/>
 
 		</components:UIPanel>
 

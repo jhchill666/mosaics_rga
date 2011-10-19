@@ -67,7 +67,7 @@ package com.rga.pearson.view.ui
 			assetsVo = gridModel.getAssets();
 			updatedAssets = view.updateAssetsVo( assetsVo );
 
-//			gridModel.setAssets( updatedAssets );
+			gridModel.setAssets( updatedAssets );
 //			colourModel.randomisation = view.stepper.value;
 
 			dispatch( new RenderEvent( RenderEvent.SEGMENT_RENDER ));
@@ -88,7 +88,15 @@ package com.rga.pearson.view.ui
 		 */
 		private function renderHanler( event:MouseEvent ):void
 		{
+			var assets:AssetConfigVO = gridModel.getAssets();
+
 			view.categories.selectedIndex = Math.random() * ( categoryModel.getCategories().length );
+
+			assets.active = ( assets.maximum * ( view.activeSegments.value / 100 ));
+			assets = view.updateAssetsVo( assets );
+			assets.updatePercentages();
+
+			gridModel.setAssets( assets );
 
 			dispatch( new RenderEvent( RenderEvent.FULL_RENDER ));
 			dispatch( new DisciplineEvent( DisciplineEvent.NEW_DISCIPLINE, view.categories.selectedIndex ));

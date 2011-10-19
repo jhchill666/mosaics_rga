@@ -44,10 +44,16 @@
 	fontWeight: bold
 }
 
-.iu_label_books, .ui_label_docs, .ui_label_images, .ui_label_inter, .ui_label_videos
+.iu_label_books, .ui_label_docs, .ui_label_images, .ui_label_inter, .ui_label_videos, .iu_label
 {
 	fontSize: 14px;
 	fontFamily:miso;
+}
+
+.iu_label
+{
+	color: #b7b7b7;
+	fontWeight:bold;
 }
 
 .iu_label_books

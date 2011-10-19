@@ -1,6 +1,7 @@
 package com.rga.pearson.model.vo
 {
 	import com.rga.pearson.model.constants.AssetConstants;
+	import com.rga.pearson.utils.NumberUtils;
 	import com.tiltdigital.data.HashMap;
 
 	public class AssetConfigVO
@@ -13,6 +14,8 @@ package com.rga.pearson.model.vo
 
 		private var _maximum : int;
 
+		public var total : int;
+
 
 		/**
 		 * Adds an assets to the vo to be included in assets totals
@@ -22,6 +25,8 @@ package com.rga.pearson.model.vo
 			var oldValue:int = assets.get( asset );
 			if( oldValue == value )
 				return;
+
+//			trace("Assets :: "+asset+", Value :: "+value );
 
 			assets.put( asset, value );
 
@@ -61,13 +66,36 @@ package com.rga.pearson.model.vo
 		/**
 		 * Update total assets to reflect any changes
 		 */
-		public function updateTotals():void
+		private function updateTotals():void
 		{
-			var value:Number;
-			active = 0;
+			var value:int;
+			total = 0;
 
 			for each( value in assets.getKeys())
-				active += value;
+				total += value;
+		}
+
+
+		/**
+		 * Update total assets to reflect percentage of total assets
+		 */
+		public function updatePercentages():void
+		{
+			var type:String, newValue:int, value:int, percent:Number, percentOfActive:Number;
+
+			for each( type in AssetConstants.getTypes())
+			{
+				value = assets.get( type );
+
+				percent = NumberUtils.percent( value, total );
+				newValue  = ( _active * percent );
+
+				assets.put( type, newValue );
+
+				trace( "Active :: "+_active+", Total :: "+total+", New :: "+newValue+", PercentOfTotal :: "+percent+", Actual :: "+value );
+			}
+
+//			trace( "\n::::::::::::: \n");
 		}
 
 

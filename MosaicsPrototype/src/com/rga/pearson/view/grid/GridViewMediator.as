@@ -40,6 +40,8 @@ package com.rga.pearson.view.grid
 			eventMap.mapListener( eventDispatcher, RenderEvent.FULL_RENDER, renderFullHandler );
 			eventMap.mapListener( eventDispatcher, RenderEvent.SEGMENT_RENDER, renderSegmentHandler );
 			eventMap.mapListener( eventDispatcher, DisciplineEvent.NEW_DISCIPLINE, newDisciplineHandler );
+
+			dispatch( new RenderEvent( RenderEvent.FULL_RENDER ));
 		}
 
 
@@ -59,7 +61,6 @@ package com.rga.pearson.view.grid
 			view.renderSegments( colourDistribution );
 			view.renderTitle( categoryModel.getCurrentTitle() );
 
-//			dispatch( new RenderEvent( RenderEvent.SAVE_GRID ));
 			dispatch( new ColourModelEvent( ColourModelEvent.SWATCHES_UPDATED ));
 		}
 

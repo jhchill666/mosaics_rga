@@ -63,16 +63,29 @@ package com.rga.pearson.model
 			for( i = 0 ; i < types.length ; ++ i )
 			{
 				numAssets = assetsVo.getAsset( types[i] );
-				percentOfTotal = NumberUtils.percent( numAssets, assetsVo.active );
+
+//				trace("NumAssets :: "+numAssets );
+
+				if( numAssets == 0 )
+					continue;
 
 				range = new ColourRange( colours[i], i, randomisation );
-				range.quantity = Math.floor( assetsVo.active * percentOfTotal );
+//				range.percent = NumberUtils.percent( numAssets, assetsVo.active );
+				range.quantity = numAssets;
+				range.active = assetsVo.active;
 
-				if( i > 0 )
-					spectrum[ i - 1 ].next = range;
+				trace( "Total :: "+assetsVo.active+", Percent :: "+range.quantity );
+
+				if( spectrum.length > 0 )
+				{
+					range.previous = spectrum[ spectrum.length - 1 ];
+					spectrum[ spectrum.length - 1 ].next = range;
+				}
 
 				spectrum.push( range );
 			}
+
+			trace("NumberColourRanges :: "+spectrum.length );
 
 			return checkHaveSpectrum( spectrum );
 		}
@@ -87,7 +100,7 @@ package com.rga.pearson.model
 
 			if( spectrum.length == 0 )
 			{
-				range = new ColourRange( ColourConstants.INACTIVE_CELL, 0, randomisation );
+				range = new ColourRange( 0x000001, 0, randomisation );
 				range.quantity = assetsVo.active;
 
 				spectrum.push( range );
@@ -112,8 +125,12 @@ package com.rga.pearson.model
 				if( segment.rawColour == ColourConstants.INACTIVE_CELL )
 					continue;
 
-				segment.rawColour = colours[segCount].raw;
-				segment.blendedColour = colours[segCount].blended;
+				if( segCount < colours.length )
+					segment.rawColour = colours[segCount].raw;
+
+				if( segment.rawColour == 0xFFFFFF )
+					segment.rawColour = colours[ colours.length - 1 ].raw;
+
 				segCount ++;
 			}
 			return new ArrayCollection( arr );

@@ -10,8 +10,6 @@ package com.rga.pearson.model.vo
 
 		public var rawColour : uint = ColourConstants.INACTIVE_CELL;
 
-		public var blendedColour: uint;
-
 		public var id : String;
 
 		public var showIndex : int;
